@@ -1,0 +1,26 @@
+digraph G {
+graph [fontname="Arial",fontsize=25,rankdir="BT"];
+node [shape=box,fontname="Arial"];
+edge [arrowhead="empty",fontname="Arial"];
+n294 [label="BaseOutputDocInterface"];
+n294 -> n274;
+n274 [label="CodeOutputInterface"];
+n275 [label="DevNullCodeDocInterface"];
+n275 -> n274;
+n292 [label="HtmlGenerator"];
+n292 -> n293;
+n351 [label="LatexGenerator"];
+n351 -> n293;
+n353 [label="ManGenerator"];
+n353 -> n293;
+n371 [label="OutputDocInterface"];
+n371 -> n294;
+n293 [label="OutputGenerator"];
+n293 -> n294;
+n370 [label="OutputList"];
+n370 -> n371;
+n387 [label="RTFGenerator"];
+n387 -> n293;
+n422 [label="XMLCodeGenerator"];
+n422 -> n274;
+}
