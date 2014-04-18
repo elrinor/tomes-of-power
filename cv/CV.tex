@@ -6,9 +6,9 @@
 \usepackage{url}
 
 \newboolean{work}
-\setboolean{work}{true}
+\setboolean{work}{false}
 \newboolean{foreign}
-\setboolean{foreign}{true}
+\setboolean{foreign}{false}
 
 \begin{document}
 \name{\Large Fokin Aleksandr}
@@ -21,7 +21,7 @@
 \end{wrapfigure}
 
     \section{\mysidestyle Contact\\Information}
-    Current Location: Moscow, Russian Federation \\
+    Current Location: Los Angeles, United States \\
     \\
     Mobile: \includegraphics[height=0.35cm]{phone.png} \\ 
     E-mail: apfokin@gmail.com \\
@@ -31,7 +31,7 @@
 	\ifthenelse{\boolean{work}}{}{
         \section{\mysidestyle Research\\Interests}
         Image-based modeling and rendering, 3d reconstruction.
-        %Ray tracing and global illumination, especially in real time.
+        Ray tracing and global illumination, especially in real time.
         Software reverse engineering, binary translation, decompilation.
     }
 
@@ -69,7 +69,7 @@
 
     \section{\mysidestyle Professional\\Experience}
     \textbf{Intel Student Research Lab at the Moscow State University} \vspace{2mm}\\\vspace{1mm}%
-    \textsl{C++ Programmer} \hfill \textbf{February 2007 - April 2008}\\
+    \textsl{Software Developer} \hfill \textbf{February 2007 - April 2008}\\
     I have implemented a panorama stitching application in C++. I was subsequently offered an intern position 
 	at Intel but had to turn it down due to personal reasons.
 
@@ -78,7 +78,7 @@
     }
 	
     \textbf{Institute for System Programming of the Russian Academy of Sciences} \vspace{2mm}\\\vspace{1mm}%
-    \textsl{C++ Programmer} \hfill \textbf{September 2007 - September 2008}\\
+    \textsl{Software Developer} \hfill \textbf{September 2007 - September 2008}\\
     I was working as a C++ programmer in a team developing a framework for dynamic analysis of binary code.
 	Using C++ metaprogramming techniques I have implemented a disassembler for MIPS64 architecture that 
 	outperformed all other disassemblers for this architecture known to our team.
@@ -88,7 +88,7 @@
     }{}
 
     \textbf{Select LTD} \vspace{2mm}\\\vspace{1mm}%
-    \textsl{Senior C++/Java Programmer} \hfill \textbf{July 2009 - September 2011}\\
+    \textsl{Software Developer} \hfill \textbf{July 2009 - September 2011}\\
     I have written some parts of the backend for \url{http://mathege.ru} and have implemented a form recognition system
     that is currently used in some of the Moscow schools for exam results checking. Detailed description of the system is
     available at \url{http://elric.ru/wordpress/projects/form-recognition-toolkit/}. 
@@ -97,13 +97,17 @@
 	\url{http://decompilation.info}.
 
 	\textbf{Combild LLC} \vspace{2mm}\\\vspace{1mm}%
-	\textsl{Development Lead, Co-founder} \hfill \textbf{June 2010 - December 2011}\\
+	\textsl{Software Development Lead, Co-founder} \hfill \textbf{June 2010 - December 2011}\\
     I was working on a program complex for IT infrastructure management that targeted small companies and IT outsourcers. I was responsible for the overall product architecture and was managing a small development team. After a year of development we have secured our first customers, but at that point the cash inflow we had wasn't sufficient to cover our expenses. Unable to secure the funding, we had to close the project.
 
     \textbf{Network Optix, Inc.} \vspace{2mm}\\\vspace{1mm}%
-    \textsl{Consultant, C++ Programmer} \hfill \textbf{October 2011 - present}\\
-    I'm currently working on HD Witness, an Enterprise Video Management platform. 
-
+    \textsl{Consultant, Senior Software Developer} \hfill \textbf{October 2011 - present}\\
+    I'm currently working on HD Witness, an Enterprise Video Management System (VMS). 
+    
+    For the initial release I have almost single-handedly implemented the client application that was very well received in the industry. Various sources have described HD Witness as the most visually appealing and user-friendly VMS on the market. 
+    
+    Currently my main responsibilities include ensuring UI and UX performance and consistency of our desktop and mobile clients, management of the front-end development team, design of public APIs and development of generic C++ libraries that are used internally.
+    
 	\textbf{Personal Projects} \vspace{2mm}\\\vspace{1mm}%
 	Some of my personal and freelance projects are listed on my website: \url{http://elric.ru/wordpress/projects}.
 
@@ -116,10 +120,9 @@
     \section{\mysidestyle Related\\Skills}
     Substantial experience with C++ and Java. \\
 	Deep understanding of the underlying principles of modern C++ libraries and frameworks such as Qt and boost. \\
-    A lot of experience writing cross-platform code that would work both on Windows and on Linux/Mac. \\
+    A lot of experience writing cross-platform C++ code. \\
     Considerable experience with multithreading in C++ and Java. \\
-    Knowledge of TCP/IP and experience with networking in C++ and Java. \\
-    Knowledge of modern realtime rendering techniques and APIs, including OpenGL and GLSL. \\
+    Knowledge of modern realtime rendering techniques and APIs. \\
     Proficiency in UX and UI design and implementation. \\
     Experience with Delphi, x86 Assembly, Linux shell scripting, SQL. \\
     Some experience with C\#, Matlab, Perl and Python. \\
