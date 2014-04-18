@@ -28,13 +28,6 @@
     \\
     \\
 
-	\ifthenelse{\boolean{work}}{}{
-        \section{\mysidestyle Research\\Interests}
-        Image-based modeling and rendering, 3d reconstruction.
-        Ray tracing and global illumination, especially in real time.
-        Software reverse engineering, binary translation, decompilation.
-    }
-
     \section{\mysidestyle Education}
     \textbf{Faculty of Computational Mathematics and Cybernetics, Moscow State University}, Moscow, Russia \vspace{2mm}\\\vspace{1mm}%
     \textsl{\ifthenelse{\boolean{foreign}}{Bachelor's}{Specialist} degree in Applied Mathematics and Computer Science} \hfill \textbf{September 2004 - July 2009}\vspace{1mm}\\
@@ -46,6 +39,13 @@
     \textsl{Full-time non-degree student} \hfill \textbf{September 2008 - March 2009}\vspace{1mm}\\
     Advisor: Professor Mitsunori Makino \\
 	I was studying Japanese, working on algorithms for real-time ray tracing and have implemented a real-time ray tracer for use with CAVE automatic virtual environment.
+
+    \ifthenelse{\boolean{work}}{}{
+        \section{\mysidestyle Research\\Interests}
+        Image-based modeling and rendering, 3d reconstruction.
+        Ray tracing and global illumination, especially in real time.
+        Software reverse engineering, binary translation, decompilation.
+    }
 
     \section{\mysidestyle Research\\Experience}
     \textbf{Institute for System Programming of the Russian Academy of Sciences} \vspace{2mm}\\\vspace{1mm}%
