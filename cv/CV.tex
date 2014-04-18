@@ -5,8 +5,6 @@
 \usepackage{ifthen}
 \usepackage{url}
 
-\newboolean{work}
-\setboolean{work}{false}
 \newboolean{foreign}
 \setboolean{foreign}{false}
 
@@ -40,12 +38,10 @@
     Advisor: Professor Mitsunori Makino \\
 	I was studying Japanese, working on algorithms for real-time ray tracing and have implemented a real-time ray tracer for use with CAVE automatic virtual environment.
 
-    \ifthenelse{\boolean{work}}{}{
-        \section{\mysidestyle Research\\Interests}
-        Image-based modeling and rendering, 3d reconstruction.
-        Ray tracing and global illumination, especially in real time.
-        Software reverse engineering, binary translation, decompilation.
-    }
+    \section{\mysidestyle Research\\Interests}
+    Image-based modeling and rendering, 3d reconstruction.
+    Ray tracing and global illumination, especially in real time.
+    Software reverse engineering, binary translation, decompilation.
 
     \section{\mysidestyle Research\\Experience}
     \textbf{Institute for System Programming of the Russian Academy of Sciences} \vspace{2mm}\\\vspace{1mm}%
@@ -66,6 +62,7 @@
     K. Troshina, A. Chernov and A. Fokin. ``Profile-Based Type Reconstruction for Decompilation'',
     in proceedings of the \textsl{17th International Conference on Program Comprehension}, pp. 263-267, 2009.
 
+    \pagebreak
 
     \section{\mysidestyle Professional\\Experience}
     \textbf{Intel Student Research Lab at the Moscow State University} \vspace{2mm}\\\vspace{1mm}%
@@ -73,19 +70,11 @@
     I have implemented a panorama stitching application in C++. I was subsequently offered an intern position 
 	at Intel but had to turn it down due to personal reasons.
 
-    \ifthenelse{\boolean{work}}{}{
-        \pagebreak
-    }
-	
     \textbf{Institute for System Programming of the Russian Academy of Sciences} \vspace{2mm}\\\vspace{1mm}%
     \textsl{Software Developer} \hfill \textbf{September 2007 - September 2008}\\
     I was working as a C++ programmer in a team developing a framework for dynamic analysis of binary code.
 	Using C++ metaprogramming techniques I have implemented a disassembler for MIPS64 architecture that 
 	outperformed all other disassemblers for this architecture known to our team.
-
-    \ifthenelse{\boolean{work}}{
-        \pagebreak
-    }{}
 
     \textbf{Select LTD} \vspace{2mm}\\\vspace{1mm}%
     \textsl{Software Developer} \hfill \textbf{July 2009 - September 2011}\\
