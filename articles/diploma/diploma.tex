@@ -1,0 +1,165 @@
+\documentclass[a4paper,12pt,titlepage,final]{article}
+\usepackage[active]{CJK}
+\usepackage[cjkjis]{ucs}
+\usepackage[utf8x]{inputenc}
+%\usepackage[T1,T2A]{fontenc}
+\usepackage[C10,T1]{fontenc}
+
+\usepackage[english, russian]{babel}
+\usepackage[compat2,a4paper]{geometry}
+\usepackage{indentfirst}
+\usepackage{amssymb,amsmath,amsthm,amscd,bm}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{appendix}
+
+
+%\usepackage{hyperref} %% TODO
+
+\usepackage[usenames]{color}
+\definecolor{mygreen}{rgb}{0.2,0.6,0.4}
+\definecolor{keywordcolor}{rgb}{0.0,0.0,0.5}
+\definecolor{commentcolor}{rgb}{0.0,0.5,0.0}
+\definecolor{symbolcolor}{rgb}{0.5,0.0,0.0}
+\definecolor{identifiercolor}{rgb}{0.0,0.0,0.0}
+\definecolor{stringcolor}{rgb}{0.0,0.0,0.0}
+
+\usepackage{geometry}
+\geometry{left=3cm}
+\geometry{right=3cm}
+\geometry{top=2cm}
+\geometry{bottom=2cm}
+
+\usepackage{setspace}
+%\newcommand{\defaultspacing}{\singlespacing}
+\newcommand{\defaultspacing}{\onehalfspacing}
+\defaultspacing
+
+\usepackage{listings}
+\lstset{
+  inputencoding=utf8x,
+  extendedchars=\true
+  language=C++,
+  morecomment=[s]{/*}{*/},
+  escapeinside=\#\@,
+  basicstyle=\footnotesize\color{symbolcolor},
+  identifierstyle=\color{identifiercolor},
+  keywordstyle=\color{keywordcolor}\bfseries,
+  stringstyle=\color{stringcolor},
+  commentstyle=\color{commentcolor}\it,
+  breakautoindent=true
+}
+\lstnewenvironment{cplusplus}[1][]{
+  \singlespacing
+  \lstset{
+    #1
+  }
+}{\defaultspacing}
+%\newenvironment{cplusplus}{\begin{minipage}{2cm}\begin{footnotesize}\singlespacing}{\defaultspacing\end{footnotesize}\end{minipage}\\}
+
+\newcommand{\tl}[1]{$\text{\color{commentcolor}\it #1}$}
+
+\renewcommand{\thefootnote}{\arabic{footnote})}
+
+\newcommand{\gf}{\mathfrak{f}}
+\newcommand{\gp}{\mathfrak{p}}
+\newcommand{\gs}{\mathfrak{s}}
+\newcommand{\gv}{\mathfrak{v}}
+\newcommand{\gx}{\mathfrak{x}}
+\newcommand{\gT}{\mathfrak{T}}
+\newcommand{\gE}{\mathfrak{E}}
+\newcommand{\gF}{\mathfrak{F}}
+\newcommand{\gG}{\mathfrak{G}}
+\newcommand{\gC}{\mathfrak{C}}
+\newcommand{\gD}{\mathfrak{D}}
+\newcommand{\gN}{\mathfrak{N}}
+\newcommand{\gM}{\mathfrak{M}}
+\newcommand{\gH}{\mathfrak{H}}
+\newcommand{\gK}{\mathfrak{K}}
+\newcommand{\gP}{\mathfrak{P}}
+\newcommand{\gR}{\mathfrak{R}}
+\newcommand{\gS}{\mathfrak{S}}
+\newcommand{\gV}{\mathfrak{V}}
+
+\newcommand{\bP}{\mathbf{P}}
+\newcommand{\bA}{\mathbf{A}}
+
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cI}{\mathcal{I}}
+
+\newcommand{\nG}{\mathbb{G}}
+\newcommand{\nF}{\mathbb{F}}
+\newcommand{\nT}{\mathbb{T}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\Rat}{\mathbb{R}}
+
+\newcommand{\gFc}{\gF^{\cap}}
+\newcommand{\gFs}{\gF^*}
+
+\newcommand{\gCa}{\gC_{\bA}}
+\newcommand{\gCp}{\gC_{\bP}}
+\newcommand{\gCpd}{\gC_{\bP'}}
+
+\newcommand{\gVa}{\gV_{\bA}}
+\newcommand{\gVp}{\gV_{\bP}}
+
+\newcommand{\Map}{\cM_{\bA}}
+
+\newcommand{\isSol}{\textit{isSolution}}
+\newcommand{\isPartSol}{\textit{isPartialSolution}}
+\newcommand{\Constraints}{\textit{Constraints}}
+\newcommand{\executes}{\textit{executes}}
+\newcommand{\pure}{\textit{pure}}
+\newcommand{\params}{\textit{params}}
+\newcommand{\any}{\textit{any}}
+\newcommand{\class}{\textit{class}}
+\newcommand{\fixed}{\textit{fixed}}
+\newcommand{\type}{\textit{type}}
+\newcommand{\adjacent}{\textit{adjacent}}
+\newcommand{\parents}{\textit{parents}}
+\newcommand{\children}{\textit{children}}
+
+
+\newtheorem{statement}{Утверждение}
+\newtheorem{lemma}{Лемма}
+\newtheorem{theorem}{Теорема}
+
+\sloppy
+
+\begin{document}
+
+\input{diploma_intro.tex}
+\input{diploma_rtti.tex}
+\input{diploma_no_rtti.tex}
+\input{diploma_no_rtti_restore.tex}
+\input{diploma_implementation.tex}
+\input{diploma_outro.tex}
+\input{diploma_appendix.tex}
+\input{diploma_bib.tex}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
