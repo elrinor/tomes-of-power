@@ -8,6 +8,9 @@
 \newboolean{foreign}
 \setboolean{foreign}{false}
 
+%\def\superofficial{}
+\def\consentclause{}
+
 \begin{document}
 \name{\Large Alexander Fokin}
 \begin{resume}
@@ -19,122 +22,130 @@
 %\end{wrapfigure}
 
     \section{\mysidestyle Contact\\Information}
-    Current Location: Moscow, Russian Federation \\
-    Mobile: \includegraphics[height=0.35cm]{phone-ru.png} \\ 
+    Telegram (preferred): \href{https://t.me/fokin_alexander}{@fokin\_alexander} \\
     E-mail: apfokin@gmail.com \\
-    LinkedIn: \url{https://linkedin.com/in/retgone}
+    LinkedIn: \url{https://linkedin.com/in/apfokin} \\
+    %Current location: Frankfurt, Germany
 
     \section{\mysidestyle Professional\\Experience}
-    \textbf{ISO C++ Standards Committee} \vspace{2mm}\\\vspace{1mm}%
-    \textsl{C++ Expert} \hfill \textbf{May 2016 - present}\\\vspace{1mm}%
-    Currently serving as a chairman of the C++ standards working group of the Russian National Body.
+    \textbf{ISO C++ Standards Committee}\vspace{1mm}\\
+    \textsl{C++ Expert} \hfill \textbf{May 2016 - present}\vspace{1mm}\\
+    Started WG21 Russia in 2016 and currently representing the Russian national body in the ISO C++ standards committee. I have some of my code in the standard, and I have been giving talks and hosting C++ events since 2015.
 
-    %{\footnotesize\textit{ISO C++ Standards Committee is called WG21, officially ISO/IEC JTC1 (Joint Technical Committee 1) / SC22 (Subcommittee 22) / WG21 (Working Group 21). More info is available at \url{http://isocpp.org} and \url{http://stdcpp.ru}.}}
-    
-    
-    \textbf{Yandex}, Moscow, Russian Federation \vspace{2mm}\\\vspace{1mm}%
-    \textsl{Head of Search Components} \hfill \textbf{October 2015 - present}\\\vspace{1mm}%
-    \textsl{Senior Search Engineer} \hfill \textbf{October 2014 - October 2015}\\
-    Currently responsible for most of Yandex search runtime, from L7 load balancer all the way down to the services running on top of search database shards, managing a team of some 80 engineers.
-    
-    Was hired as an engineer to work on the next generation index that would speed up the search process. The scope of the project was subsequently expanded to what effectively amounted to rewriting most of the search runtime. Wrote most of the index i/o and runtime code, and successfully deployed it in several search verticals, bringing significant performance and quality gains. This subsequently made it possible to considerably increase the number of document in our search database while staying on the same hardware.
-    
-    As a side project have started an effort to revitalize our code base, replacing dated code and generally bringing order to where chaos has previously reigned. Ported clang's libcxx to MSVC as part of this effort, thus being instrumental in our switch to C++11 STL.
+\ifdefined\superofficial
+    {\footnotesize\textit{ISO C++ Standards Committee is called WG21, officially ISO/IEC JTC1 (Joint Technical Committee 1) / SC22 (Subcommittee 22) / WG21 (Working Group 21). More info is available at \url{http://isocpp.org} and \url{http://stdcpp.ru}.}}
+\fi
 
-    Also currently leading a project to improve the way programming interviews are performed at Yandex. Started with a number of presentations on best interviewing practices for different branches of the company, then worked on developing new rules for our interviewing process. Was subsequently charged with implementing these rules on the company scale. Did a lot of research into what constituted a good interview, gathered a team of skilled interviewers, organized interviewing training for employees, and optimized the interviewing process in a manner that was both transparent for all parties involved and was meeting our KPIs.
 
-    %{\footnotesize\textit{Yandex is one of the largest internet companies in Europe, operating Russia's most popular search engine. More info is available at \url{https://yandex.com/company/}.}}
+    \vspace{2mm}
+    \textbf{Ozon}, Moscow, Russian Federation\vspace{1mm}\\
+    \textsl{Director, Search \& Platform} \hfill \textbf{October 2019 - January 2022}\vspace{1mm}\\
+    Joined Ozon at a turbulent time when it was growing over 100\% YoY. 
+
+    Was responsible for all of Ozon infrastructure, from the datacenter level, all the way up to common libraries used throughout the company. Was handed the teams when the previous CTO has left the company, so was tackling a lot of hard problems at the same time --- scaling the infrastructure to meet business needs, doing the reorgs necessary, limiting the damage from people following in the previous CTO's footsteps, hiring like crazy, both into IC and leadership positions, and making technical decisions myself when the teams lacked the necessary skills or perspective.
+
+    Was also responsible for all of machine learning / data science efforts in the company, including search quality, personal recommendations, antifraud, demand prediction, automatic moderation and SKU matching.  Dealt away with the matrix structure that made it hard for the ML teams to actually focus on the product, was hiring non-stop, and was helping the teams with product vision and technical decisions.
+
+    In terms of product teams, was leading market monitoring and search \& recommendations. For my last year at Ozon was mainly focusing on search, driving a number of projects on all levels of the search stack:
+    \begin{itemize}
+    \item Implementing a custom search engine based on Apache Lucene, bringing significant performace gains. At 2021 peaks we were handling over 10K RPS for a continuously updating search index of 10s of millions of SKUs.
+    \item Implementing a custom realtime personal recommendations engine.
+    \item Shipping a unified system for A/B test analysis that was subsequently used all throughout the company.
+    \item Designing and implementing several different advertising formats in search and recommendations, positively affecting the company's EBITDA. This was very successful, to the point that competitors started rolling out the same formats several months after our launch.
+    \item Continuously improving search and recommendations quality.
+    \end{itemize}
+    %\vspace{-4mm}
     
+    In terms of the tech stack, my teams were using a variety of languages, including Go, Java, C\# and Python. On the infrastructure side we were using pretty much everything that the opensource world has to offer, including K8s, PostgreSQL, Redis, ClickHouse, Hadoop, etc.
+
+    \vspace{2mm}
+    \textbf{Yandex}, Moscow, Russian Federation\vspace{1mm}\\
+    \textsl{Head of Search Components \& Safe Search} \hfill \textbf{June 2019 - October 2019}\vspace{1mm}\\
+    \textsl{Head of Search Components} \hfill \textbf{October 2015 - June 2019}\vspace{1mm}\\
+    \textsl{Senior Search Engineer} \hfill \textbf{October 2014 - October 2015}\vspace{1mm}\\
+    Was responsible for Yandex web search runtime, antispam / safe search, and parts of internal cloud infrastructure, managing a team of over 100 engineers.
     
-    \textbf{Network Optix}, Moscow, Russian Federation, then Los Angeles, USA \vspace{2mm}\\\vspace{1mm}%
-    \textsl{Senior Software Engineer} \hfill \textbf{October 2011 - July 2014}\\ 
-    Designed and implemented initial version of the HD Witness client application, making sure that its high-level architecture is sound and extensible. As of 2016, five years down the road, most of the foundational code is still unchanged, with a bunch of features added on top.
+    \pagebreak
+
+    The most important projects that I have worked on are as follows:
     
-    As the person solely responsible for the client-facing part of the system, I made no compromises when it came to delivering the best experience for our users. After 1.0 release various sources have described HD Witness as the most user-friendly and aesthetically pleasing video management system on the market, which has helped the company to gain a competitive edge.
-    
+    \begin{itemize}
+    \item Redesigning the search stack for the modern times of cheap SSDs, fast networks, and DSSMs. Over the years pretty much everything about the search stack was changed, even including how it was split into services. I wrote most of the foundational code for the first step in this process, squeezing out as much performance as possible by using all of the low-level tricks known to humanity and consulting with our linux kernel engineers, and throughout the next several years we continued to ship incremental improvements, getting the number of document in the search index to 100s of billions while simultaneously bringing substantial performance and quality gains.
+    \item Improving technical interviews in the company, making them standardized and consistent. This was a company-wide project that has included everything from researching how it's done in other companies, to doing lectures on best interviewing practices, preparing 100s of interviewers, creating an online seminar, incrementally improving the rules, and scaling it all up when I was no longer able to do everything by myself. This basically amounted to single-handedly turning a ship of over 4000 developers 90 degrees while all of them protested, and in terms of long-term impact on the company this was likely the most important effort that I led at Yandex.
+    \item Revitalizing the codebase and creating a system that would motivate developers to pay off technical debt in common code. This was also a company-wide project that started with me porting clang's libcxx to MSVC so that we could switch to C++11 STL, and realizing that this effort could be crowdsourced. This then paved way to some important repository-wide refactorings that would not have been possible otherwise.
+    \end{itemize}
+    \vspace{-4mm}
+
+    In terms of the tech stack, I was mostly writing C++ code, and my teams were using either C++ or Python. On the infrastructure side pretty much everything used at Yandex is developed in-house.
+
+\ifdefined\superofficial
+    {\footnotesize\textit{Yandex is one of the largest internet companies in Europe, operating Russia's most popular search engine. More info is available at \url{https://yandex.com/company/}.}}
+\fi 
+
+
+    \vspace{2mm}
+    \textbf{Network Optix}, Moscow, Russian Federation, then Los Angeles, USA\vspace{1mm}\\
+    \textsl{Senior Software Engineer} \hfill \textbf{October 2011 - July 2014}\vspace{1mm}\\ 
+    Designed and implemented initial version of the Nx Witness client application, making sure that its high-level architecture is sound and extensible.
+
+    As the person solely responsible for the client-facing part of the system, I made no compromises when it came to delivering the best experience for the users. After 1.0 release various sources have described Nx Witness as the most user-friendly and aesthetically pleasing video management system on the market, which has helped the company to gain a competitive edge.
+
     Was subsequently charged with management of the front-end development team. Other responsibilities included design of public APIs and development of generic C++ libraries that were used internally.
     
-    %Streamlined the UI making it highly intuitive and utilized OpenGL to provide a fluid and visually appealing user experience. 
+\ifdefined\superofficial
+    {\footnotesize\textit{Network Optix is an enterprise video software development company headquartered in Burbank, CA, focused on building easy-to-use video management technologies. More info is available at \url{http://www.networkoptix.com/}.}}
+\fi
     
-    %Was subsequently responsible for development of generic C++ libraries that were used internally, including compile-time reflection for C++ types, data serialization and object-relational mapping. Other responsibilities included design of public APIs, management of the front-end development team and ensuring UI and UX consistency of our desktop and mobile clients.
-
-    %{\footnotesize\textit{Network Optix is an enterprise video software development company headquartered in Burbank, CA, focused on building easy-to-use video management technologies. More info is available at \url{http://www.networkoptix.com/}.}}
     
-    \pagebreak    
-
-    
-    %\textbf{Combild}, Moscow, Russian Federation \vspace{2mm}\\\vspace{1mm}%
-    %\textsl{Software Development Lead, Co-founder} \hfill \textbf{June 2010 - October 2011}\\
-    %Combild was started to create an IT service management (ITSM) system that would target small companies and IT outsourcers, an underserved market niche for which competing solutions were either too expensive or excessively complex. Combild was to offer a lightweight and user-friendly ITSM system with a licensing model specifically targeted at small companies and IT oursourcers.
-
-    %At the time all other solutions on the market were either too bulky and hard to maintain, or were not suitable for the business model of IT outsourcers. Frustrated with the state of things, we have decided to roll out our own product.
-
-    %My role was to lay out the initial product architecture, to implement the first demonstrable version, and then to work with customers to prioritize and clarify the features and to manage a small development team. 
-    %The system was developed in C++/Qt and targeted both Windows and Linux.
-    
-    %After a year of development we have secured our first customers, but at that point the cash inflow we had wasn't sufficient to cover our expenses. Unable to secure the funding, we had to close the project.
-
-    
-    \textbf{Select LTD}, Moscow, Russian Federation \vspace{2mm}\\\vspace{1mm}%
-    \textsl{Software Engineer} \hfill \textbf{July 2009 - September 2011}\\
-    Was mainly working on SmartDec, a native code decompiler. Laid out the architecture of the decompiler and implemented several frontend and backend plugins, including support for different x86 and PIC assembly input formats. Was responsible for devising novel algorithms that would improve the quality of the decompiled code and would allow for reconstruction of C++-specific constructs. This effort has led to several publications on international conferences on reverse engineering. Detailed description of the decompiler is available at \url{http://decompilation.info}.
+    \vspace{2mm}    
+    \textbf{SmartDec}, Moscow, Russian Federation\vspace{1mm}\\
+    \textsl{Software Engineer} \hfill \textbf{July 2009 - September 2011}\vspace{1mm}\\
+    Was mainly working on SmartDec, a native code decompiler. Laid out the architecture of the decompiler and implemented several frontend and backend plugins, including support for different x86 and PIC assembly input formats. Was responsible for devising novel algorithms that would improve the quality of the decompiled code and would allow for reconstruction of C++-specific constructs. This effort has led to several publications on international conferences on reverse engineering.
 
     Have also implemented a form recognition toolkit that was subsequently used in some of the Moscow schools for test checking. 
     %Detailed description is available at \url{http://elric.ru/wordpress/projects/form-recognition-toolkit/}. 
 
-    Was additionally working on \url{http://mathege.ru}, a national mathematics exam portal developed in Java using Apache Struts web framework. Did both frontend and backend development and have implemented a \LaTeX~to html converter that was used for importing problems into the system.
+    %Was additionally working on \url{http://mathege.ru}, a national mathematics exam portal. Did both frontend and backend development and have implemented a \LaTeX~to html converter that was used for importing problems into the system.
 
-    %{\footnotesize\textit{Select LTD is a software security consulting company specializing in vulnerability analysis and reverse engineering. Their web presence is limited to \url{http://decompilation.info}, a website describing their decompiler.}}
+\ifdefined\superofficial
+    {\footnotesize\textit{SmartDec is a software security consulting company specializing in vulnerability analysis and reverse engineering. More info is available at \url{http://smartdec.net}.}}
+\fi
     
     
-    \textbf{Institute for System Programming of the Russian Academy of Sciences}, Moscow, Russian Federation \vspace{2mm}\\\vspace{1mm}%
-    \textsl{Software Engineer} \hfill \textbf{September 2007 - September 2008}\\
-    Was working in a team developing a framework for dynamic analysis of binary code. Using C++ metaprogramming techniques implemented a disassembler for MIPS64 architecture that significantly outperformed all other disassemblers for this architecture.
+    \vspace{2mm}
+    \textbf{Institute for System Programming of the Russian Academy of Sciences}, Moscow, Russian Federation\vspace{1mm}\\
+    \textsl{Software Engineer} \hfill \textbf{September 2007 - September 2008}\vspace{1mm}\\
+    Was working in a team developing a framework for dynamic analysis of binary code and implemented a disassembler for MIPS64 architecture that significantly outperformed all other disassemblers for this architecture.
 
-    %{\footnotesize\textit{ISPRAS is an R\&D organization in the field of system programming and software engineering. Among its clients are leading IT companies such as HP, IBM, Intel and others. More info is available at \url{http://www.ispras.ru/en/}.}}
+\ifdefined\superofficial
+    {\footnotesize\textit{ISPRAS is an R\&D organization in the field of system programming and software engineering. Among its clients are leading IT companies such as HP, IBM, Intel and others. More info is available at \url{http://www.ispras.ru/en/}.}}
+\fi
     
-   
-    \textbf{Intel}, Moscow, Russian Federation \vspace{2mm}\\\vspace{1mm}%
-    \textsl{Software Engineering Intern} \hfill \textbf{February 2007 - April 2008}\\
-    Was researching computer vision algorithms and have implemented a panorama stitching application. Description is available at \url{https://github.com/retgone/prec}.
+    \pagebreak
 
-    Was also charged with the development of Ruby bindings for Intel's Integrated Performance Primitives library. Description is available at \url{https://github.com/retgone/ipp4r}.
+    \vspace{2mm}
+    \textbf{Intel}, Moscow, Russian Federation\vspace{1mm}\\
+    \textsl{Software Engineering Intern} \hfill \textbf{February 2007 - April 2008}\vspace{1mm}\\
+    Was researching computer vision algorithms and have implemented a panorama stitching application. Was also charged with the development of Ruby bindings for Intel's Integrated Performance Primitives library.
     
-    %{\footnotesize\textit{Intel is an American multinational corporation and technology company. More info is available at \url{http://www.intel.com}.}}
+\ifdefined\superofficial
+    {\footnotesize\textit{Intel is an American multinational corporation and technology company. More info is available at \url{http://www.intel.com}.}}
+\fi
     
-    
-    %\textbf{Personal Projects} \vspace{2mm}\\\vspace{1mm}%
-    %I am an avid programmer and I enjoy writing code in my free time. Throughout the years I have done a lot freelance work and have finished several personal projects, including a real-time ray-tracing engine, a virtual mouse driver for Windows XP, a tool for automatic reconstruction of 3d solids from engineering drawings and a lot of OpenGL demos. For more information check out my github page (\url{https://github.com/retgone}).
-   
    
     \section{\mysidestyle Education}
-    \textbf{Department of Computational Mathematics and Cybernetics, Moscow State University}, Moscow, Russian Federation \vspace{2mm}\\\vspace{1mm}%
+    \textbf{Department of Computational Mathematics and Cybernetics, Moscow State University}, Moscow, Russian Federation\vspace{1mm}\\
     \textsl{\ifthenelse{\boolean{foreign}}{Bachelor's}{Specialist} degree in Applied Mathematics and Computer Science} \hfill \textbf{September 2004 - July 2009}\vspace{1mm}\\
     Advisor: Professor Alexander Chernov \\
     Thesis: Reconstruction of Class Hierarchies for Decompilation of C++ Programs \\
     Graduated with high honors. Diploma GPA is 5.0 out of 5.0.
 
-    \textbf{Graduate School of Science and Engineering, Chuo University}, Tokyo, Japan \vspace{2mm}\\\vspace{1mm}%
+    \textbf{Graduate School of Science and Engineering, Chuo University}, Tokyo, Japan\vspace{1mm}\\
     \textsl{Full-time non-degree student} \hfill \textbf{September 2008 - March 2009}\vspace{1mm}\\
     Advisor: Professor Mitsunori Makino \\
     Was studying Japanese, working on algorithms for real-time ray tracing and implemented a real-time ray tracer for use with CAVE automatic virtual environment.
 
     
-%    \section{\mysidestyle Research\\Interests}
-%    Image-based modeling and rendering, 3d reconstruction.
-%    Ray tracing and global illumination, especially in real time.
-%    Software reverse engineering, binary translation, decompilation.
-
-%    \section{\mysidestyle Research\\Experience}
-%    \textbf{Select LTD} \vspace{2mm}\\\vspace{1mm}%
-%    \hfill \textbf{October 2010 - September 2011}\\
-%    I continued my work on C++ decompilation at Select LTD. 
-
-%    \textbf{Institute for System Programming of the Russian Academy of Sciences} \vspace{2mm}\\\vspace{1mm}%
-%    \hfill \textbf{July 2008 - September 2010}\\
-%    I was doing research on decompilation of C++ programs.
-
-
     \section{\mysidestyle Publications}
     A. Fokin, E. Derevenetc, A. Chernov and K. Troshina. ``SmartDec: Approaching C++ Decompilation'',
     in proceedings of the \textsl{18th Working Conference on Reverse Engineering}, pp. 347-356, 2011.
@@ -146,16 +157,13 @@
     in proceedings of the \textsl{17th International Conference on Program Comprehension}, pp. 263-267, 2009.
 
 
-    \pagebreak    
-
-    
-    \section{\mysidestyle Honours, \\Awards and \\Test Scores}
-    TOEFL iBT, 111/120, Moscow, 2010.                                                               \vspace{1mm}\\
-    M.V. Lomonosov Scholarship for Academic Excellence, Moscow, 2006-2009.                          \vspace{1mm}\\
-    ABBYY Collegiate Mathematics Competition, 1st place, Moscow, 2006.                              \vspace{1mm}\\
-    8th Moscow Collegiate Programming Contest, 9th place, Moscow, 2006.                             \vspace{1mm}\\
-    7th Moscow Collegiate Programming Contest, 11th place, Moscow, 2005.                            \vspace{1mm}\\
-    Unified State Exam in Mathematics, 100/100 (nationwide top), Izhevsk, 2004.                     \vspace{1mm}
+%    \section{\mysidestyle Honours, \\Awards and \\Test Scores}
+%    TOEFL iBT, 111/120, Moscow, 2010.                                                               \vspace{1mm}\\
+%    M.V. Lomonosov Scholarship for Academic Excellence, Moscow, 2006-2009.                          \vspace{1mm}\\
+%    ABBYY Collegiate Mathematics Competition, 1st place, Moscow, 2006.                              \vspace{1mm}\\
+%    8th Moscow Collegiate Programming Contest, 9th place, Moscow, 2006.                             \vspace{1mm}\\
+%    7th Moscow Collegiate Programming Contest, 11th place, Moscow, 2005.                            \vspace{1mm}\\
+%    Unified State Exam in Mathematics, 100/100 (nationwide top), Izhevsk, 2004.                     \vspace{1mm}
 
 %    \section{\mysidestyle Professional\\Skills}
 %    Programming Languages: substantial experience with C++ and Java; experience with Delphi, x86 Assembly; some experience with C\#, Matlab, Perl and Python. \\
@@ -166,8 +174,14 @@
     \section{\mysidestyle Languages}
     Russian: native. \\
     English: fluent. \\
-    Japanese: intermediate.
-
+    Japanese: elementary.
+  
+    \ifdefined\consentclause
+    \vspace{5mm}
+    {\footnotesize\textit{I hereby give consent for my personal data included in my application to be processed for the purposes of the recruitment process under the Personal Data Protection Act as of 29 August 1997, consolidated text: Journal of Laws 2016, item 922 as amended.}}
+    \fi
+    
+    
 \end{resume}
 \end{document}
 
