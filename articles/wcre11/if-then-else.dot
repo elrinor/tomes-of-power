@@ -1,0 +1,15 @@
+digraph Workflow {
+	node[shape="box"]
+
+	subgraph cluster_if_then_else {
+		condition -> then
+		condition -> else
+	}
+	
+	a[label="..."]
+	b[label="..."]
+
+	a->condition
+	then->b
+	else->b
+}
