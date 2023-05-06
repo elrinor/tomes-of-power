@@ -1,0 +1,16 @@
+.slidev-layout {
+    h1, h2, h3, h4, p, div {
+        @apply select-none;
+    }
+
+    pre, code {
+        @apply select-text;
+        font-size: 12px !important;
+        line-height: 16px !important;
+    }
+
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
