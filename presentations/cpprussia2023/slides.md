@@ -17,7 +17,7 @@ info: |
 drawings:
   persist: true
 # use UnoCSS
-css: unocss
+# css: unocss
 # page transition
 transition: fade
 # apply any windi css classes to the current slide
@@ -28,7 +28,7 @@ canvasWidth: 800
 
 # Designing Robust APIs
 
-How to Write C++ Code that's Safe, Extensible, Efficient & Easy to Use
+**How to Write C++ Code that's Safe, Extensible, Efficient & Easy to Use**
 
 <!-- --------------------------------------------------------------------------------------------------------- -->
 ---
@@ -38,6 +38,7 @@ image: me.jpg
 
 # Обо мне
 
+- Пишу на C++ больше 15 лет.
 - Основал WG21 Russia в 2016 вместе с [@apolukhin](https://github.com/apolukhin).
 - В 2016-2019 представлял предложения от РФ в комитете.
 - Руководил разработкой поискового движка в Яндексе.
@@ -52,7 +53,7 @@ layout: full
 # Для кого этот доклад?
 
 - Для тех, кто пишет библиотечный код.
-- Для тех, чей код так или иначе будет долго жить и широко использоваться.
+- Для тех, чей код так или иначе будет долго жить или широко использоваться.
 
 <br/>
 
@@ -104,14 +105,15 @@ mindmap
 
 
 [The Wonderfully Terrible World of C and C++ Encoding APIs](https://thephd.dev/the-c-c++-rust-string-text-encoding-api-landscape):
-> - Standard C: it’s <span style="color:darkred;">trash</span>.
-> - Standard C++: provides next-to-nothing of its own that is not sourced from C, and when it does it somehow makes it worse. <span style="color:darkred;">Also trash</span>. 
+> - Standard C: it’s <span class="text-red-600  ">trash</span>.
+> - Standard C++: provides next-to-nothing of its own that is not sourced from C, and when it does it somehow makes it worse. <span class="text-red-600">Also trash</span>. 
 > - Windows API: it does not handle UTF-32.
 > - libiconv: error handling and insertion of replacements is implementation-defined, and the replacements are also implementation-defined, and whether or not it even does it is implementation-defined, and whether or not it’s any good is — you guessed it! — implementation-defined.  
 > ...
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
+<!-- Попробуйте найти нормальную библиотеку для работы с ini файлами, лол! 
+    --------------------------------------------------------------------------------------------------------- -->
 ---
 ---
 
@@ -135,20 +137,21 @@ mindmap
 
 > IMHO, the takeaway here is that API footguns should be treated as security vulnerabilities.
 
-См. [Back to Basics: C++ API Design - Jason Turner - CppCon 2022](https://www.youtube.com/watch?v=zL-vn_pGGgY).
+См. [Back to Basics: C++ API Design - CppCon 2022](https://www.youtube.com/watch?v=zL-vn_pGGgY) by [Jason Turner
+](https://github.com/lefticus).
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <!-- --------------------------------------------------------------------------------------------------------- -->
 ---
 ---
 
-### **Rule #1:**
-### **Проектируйте API так, чтобы его нельзя было использовать неправильно.**
+## Rule #1:
+### **Проектируйте API так, чтобы его нельзя было использовать неправильно**
 
 <br/>
 
 - Программа должна или работать корректно, или завершаться с ошибкой.
-- Не должно существовать последовательности вызовов которая приводит вашу программу в некорректное состояние.
+- Не должно существовать последовательности вызовов, которая приводит вашу программу в некорректное состояние.
 - Чем меньше у вашего API способов завершиться с ошибкой — тем лучше. Зачем обрабатывать ошибки, если можно спроектировать API, в котором их нет?
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
@@ -277,6 +280,8 @@ public:
 
 <div align="center">VS</div>
 
+<br/>
+
 <div grid="~ cols-2 gap-2" m="-t-2">
 
 ```cpp {all}
@@ -331,42 +336,15 @@ public:
 ---
 ---
 
-```cpp {all|4-5}
-class Table {
-public:
-    void beginTransaction();
-    void setValue(int key, int value);
-    void commitTransaction();
-}
-```
-
-<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
----
----
-
-```cpp {all}
-class Table {
-public:
-    Transaction beginTransaction();
-}
-
-class Transaction {
-public:
-    void setValue(int key, int value);
-    void commit();
-    ~Transaction(); // Commits if not committed already.
-}
-```
-
-<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
----
----
-
-```cpp {all|9-10}
+```cpp {all|15-16}
 class Window {
 public:
+    void setTitle(const std::string &title);
+    std::string title() const;
+
+    void resize(const Size &size);
+    Size size() const;
+
     Point position();
     void setPosition(Point point);
 
@@ -383,9 +361,15 @@ public:
 ---
 ---
 
-```cpp {all}
+```cpp {14,17-23}
 class Window {
 public:
+    void setTitle(const std::string &title);
+    std::string title() const;
+
+    void resize(const Size &size);
+    Size size() const;
+
     Point position();
     void setPosition(Point point);
 
@@ -408,7 +392,7 @@ public:
 ---
 ---
 
-### **Rule #2:**
+## Rule #2:
 ### **Divide & Conquer: Дробите!**
 
 <br/>
@@ -416,7 +400,8 @@ public:
 - Количество возможных взаимодействий (и багов) внутри класса растет как квадрат от размера класса. Меньше классы — меньше проблем!
 - Аналогично работает и с самими классами. Классы в "помойке классов" начинают зависеть друг от друга, снова квадрат зависимостей и баги. Дробите на библиотеки!
 - Эта же логика применима к функциям. Функции на несколько экранов означают, что вам не хватает каких-то базовых абстракций.
-- Помните про S in SOLID. The Single-responsibility principle: There should never be more than one reason for a class to change.
+- Помните про S in SOLID. \
+  *"The Single-responsibility principle: There should never be more than one reason for a class to change."*
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <!-- --------------------------------------------------------------------------------------------------------- -->
@@ -430,6 +415,7 @@ void initStrings(const Buffer &buffer) {
         const char *nextPos = static_cast<const char *>(memchr(&buffer.data()[pos], '\0', buffer.size() - pos));
         size_t size = nextPos ? (nextPos - &buffer.data()[pos]) : (buffer.size() - pos);
         std::string str = std::string(&buffer.data()[pos], size);
+
         if (!str.empty() && str[0] == '"') {
             if (str.size() > 2) {
                 str = str.substr(1, str.size() - 2);
@@ -437,6 +423,7 @@ void initStrings(const Buffer &buffer) {
                 str = "";
             }
         }
+
         this->_strings.push_back(str);
         pos += size;
     }
@@ -463,6 +450,7 @@ void initStrings(const Buffer &buffer) {
         const char *nextPos = static_cast<const char *>(memchr(&buffer.data()[pos], '\0', buffer.size() - pos));
         size_t size = nextPos ? (nextPos - &buffer.data()[pos]) : (buffer.size() - pos);
         std::string str = std::string(&buffer.data()[pos], size);
+
         if (!str.empty() && str[0] == '"') {
             if (str.size() > 2) {
                 str = str.substr(1, str.size() - 2);
@@ -470,6 +458,7 @@ void initStrings(const Buffer &buffer) {
                 str = "";
             }
         }
+
         this->_strings.push_back(str);
         pos += size;
     }
@@ -507,6 +496,7 @@ void initStrings(const Buffer &buffer) {
         const char *nextPos = static_cast<const char *>(memchr(&buffer.data()[pos], '\0', buffer.size() - pos));
         size_t size = nextPos ? (nextPos - &buffer.data()[pos]) : (buffer.size() - pos);
         std::string str = std::string(&buffer.data()[pos], size);
+
         if (!str.empty() && str[0] == '"') {
             if (str.size() > 2) {
                 str = str.substr(1, str.size() - 2);
@@ -514,6 +504,7 @@ void initStrings(const Buffer &buffer) {
                 str = "";
             }
         }
+
         this->_strings.push_back(str);
         pos += size;
     }
@@ -544,13 +535,14 @@ void initStrings(const Buffer &buffer) {
 ---
 ---
 
-```cpp {7-14}
+```cpp {8-16}
 void initStrings(const Buffer &buffer) {
     size_t pos = 0;
     while (pos < buffer.size()) {
         const char *nextPos = static_cast<const char *>(memchr(&buffer.data()[pos], '\0', buffer.size() - pos));
         size_t size = nextPos ? (nextPos - &buffer.data()[pos]) : (buffer.size() - pos);
         std::string str = std::string(&buffer.data()[pos], size);
+
         if (!str.empty() && str[0] == '"') {
             if (str.size() > 2) {
                 str = str.substr(1, str.size() - 2);
@@ -558,6 +550,7 @@ void initStrings(const Buffer &buffer) {
                 str = "";
             }
         }
+
         this->_strings.push_back(str);
         pos += size;
     }
@@ -588,13 +581,14 @@ void initStrings(const Buffer &buffer) {
 ---
 ---
 
-```cpp {15}
+```cpp {17}
 void initStrings(const Buffer &buffer) {
     size_t pos = 0;
     while (pos < buffer.size()) {
         const char *nextPos = static_cast<const char *>(memchr(&buffer.data()[pos], '\0', buffer.size() - pos));
         size_t size = nextPos ? (nextPos - &buffer.data()[pos]) : (buffer.size() - pos);
         std::string str = std::string(&buffer.data()[pos], size);
+
         if (!str.empty() && str[0] == '"') {
             if (str.size() > 2) {
                 str = str.substr(1, str.size() - 2);
@@ -602,6 +596,7 @@ void initStrings(const Buffer &buffer) {
                 str = "";
             }
         }
+
         this->_strings.push_back(str);
         pos += size; // BUG: should be pos += size + 1;
     }
@@ -632,15 +627,15 @@ void initStrings(const Buffer &buffer) {
 ---
 ---
 
-### **Rule #2:**
+## Rule #2:
 ### **Divide & Conquer: Дробите!**
 
 <br/>
 
 - Дробить — это еще и про слои абстракции!
 - Как только видите сложный код — думайте, каких абстракций вам не хватает!
-- Если ваш код получается слишком сложным — дробите дальше!
-- Если у вас уже есть плохой API — не стесняйтесь писать адаптеры (привет std::chrono).
+- Если ваш код все еще сложный — дробите дальше!
+- Если у вас уже есть плохой API — не стесняйтесь писать адаптеры (привет <span class="font-mono">std::chrono</span>).
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <!-- --------------------------------------------------------------------------------------------------------- -->
@@ -989,7 +984,7 @@ public:
 ---
 ---
 
-### **Rule #3:**
+## Rule #3:
 ### **Тратьте время на придумывание хороших имен!**
 
 > "There are only two hard things in Computer Science: cache invalidation and naming things." — Phil Karlton
@@ -999,8 +994,9 @@ public:
 <br/>
 
 * Если что-то не получается назвать нормально — значит вы хотите странного, переделывайте свой дизайн.
-* Не поддавайтесь соблазну назвать класс HandlerHelper. Все что заканчивается на Helper — это признание поражения.
-* Думайте над тем, в чем вообще концептуальная суть ваших абстракций. *"Что такое future?"*
+* Не поддавайтесь соблазну назвать класс <span class="font-mono">HandlerHelper</span>. Все, что заканчивается на <span class="font-mono">Helper</span> — это признание поражения.
+* Думайте над тем, в чем вообще концептуальная суть ваших абстракций. \
+  *"Что такое future?"*
 * Пользуйтесь [thesaurus.com](https://www.thesaurus.com/) и [ChatGPT](http://chat.openai.com/).
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
@@ -1095,7 +1091,7 @@ public:
 ---
 ---
 
-### **Rule #2 + Rule #3:**
+## Rule #2 + Rule #3:
 ### **Дробление и нейминг — это про абстракции, а не про классы!**
 
 <br/>
@@ -1121,13 +1117,15 @@ public:
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- Futures как они есть это просто пример плохого API. У меня лично не получилось нормально заюзать std::future 
+<!-- В целом API дизайн это про абстракции.
+
+     Futures как они есть это просто пример плохого API. У меня лично не получилось нормально заюзать std::future 
      ни в одном проекте, приходилось велосипедить. Аналогичная ситуация с futures with continuations - узкоприменимая штука.
      --------------------------------------------------------------------------------------------------------- -->
 ---
 ---
 
-```cpp
+```cpp {all}
 
 Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
     return network
@@ -1153,11 +1151,86 @@ void myAwesomeFunction(Network &network) {
 ---
 ---
 
-```cpp {1-2,4,14}
+```cpp {1-2}
 // Returns a Task, task is not bound to any execution context.
 Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
     return network
-        .request(makeNetworkRequest(opts)) // request() also returns a Task!
+        .request(makeNetworkRequest(opts))
+        .then([](std::string_view jsonData) {
+            TwitterPosts result;
+            deserialize(Json::parse(jsonData), &result);
+            return result;
+        });
+}
+
+void myAwesomeFunction(Network &network) {
+    TwitterPosts posts = fetchTwitterPosts(network, TwitterFetchOptions("@stroustrup", 20))
+        .run(globalThreadPool())
+        .join();
+    std::print("{}", posts);
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {4}
+
+Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+    return network
+        .request(makeNetworkRequest(opts)) // Network::request() also returns a Task!
+        .then([](std::string_view jsonData) {
+            TwitterPosts result;
+            deserialize(Json::parse(jsonData), &result);
+            return result;
+        });
+}
+
+void myAwesomeFunction(Network &network) {
+    TwitterPosts posts = fetchTwitterPosts(network, TwitterFetchOptions("@stroustrup", 20))
+        .run(globalThreadPool())
+        .join();
+    std::print("{}", posts);
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {5-9}
+
+Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+    return network
+        .request(makeNetworkRequest(opts))
+        .then([](std::string_view jsonData) { // Tasks are composable!
+            TwitterPosts result;
+            deserialize(Json::parse(jsonData), &result);
+            return result;
+        });
+}
+
+void myAwesomeFunction(Network &network) {
+    TwitterPosts posts = fetchTwitterPosts(network, TwitterFetchOptions("@stroustrup", 20))
+        .run(globalThreadPool())
+        .join();
+    std::print("{}", posts);
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {14}
+
+Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+    return network
+        .request(makeNetworkRequest(opts))
         .then([](std::string_view jsonData) {
             TwitterPosts result;
             deserialize(Json::parse(jsonData), &result);
@@ -1178,7 +1251,66 @@ void myAwesomeFunction(Network &network) {
 ---
 ---
 
-### Rule #4:
+```cpp {15}
+
+Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+    return network
+        .request(makeNetworkRequest(opts))
+        .then([](std::string_view jsonData) {
+            TwitterPosts result;
+            deserialize(Json::parse(jsonData), &result);
+            return result;
+        });
+}
+
+void myAwesomeFunction(Network &network) {
+    TwitterPosts posts = fetchTwitterPosts(network, TwitterFetchOptions("@stroustrup", 20))
+        .run(globalThreadPool())
+        .join(); // Waits for completion.
+    std::print("{}", posts);
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {all}
+
+Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+    return network
+        .request(makeNetworkRequest(opts))
+        .then([](std::string_view jsonData) {
+            TwitterPosts result;
+            deserialize(Json::parse(jsonData), &result);
+            return result;
+        });
+}
+
+void myAwesomeFunction(Network &network) {
+    TwitterPosts posts = fetchTwitterPosts(network, TwitterFetchOptions("@stroustrup", 20))
+        .run(globalThreadPool())
+        .join();
+    std::print("{}", posts);
+}
+
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+См. [Working with Asynchrony Generically: A Tour of C++ Executors - CppCon 21](https://www.youtube.com/watch?v=xLboNIf7BTg) by [Eric Niebler](https://github.com/ericniebler).
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- Ключевой момент здесь - мы отвязали таску от контекста в котором она выполняется.
+    --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+## Rule #4:
 ### **Создавайте ортогональные и взаимозаменяемые абстракции**
 
 <br/>
@@ -1202,6 +1334,8 @@ void myAwesomeFunction(Network &network) {
 
 <div align="center">VS</div>
 
+<br/>
+
 <div grid="~ cols-2 gap-2" m="-t-2">
 
 ```cpp {all}
@@ -1214,7 +1348,7 @@ public:
 
 class TestResults : public Serializable {
 public:
-    virtual std::string serialize() const {
+    virtual std::string serialize() const override {
         return fmt::format("{}:{}", id(), 
                            fmt::join(results(), ",")); 
     }
@@ -1223,11 +1357,11 @@ public:
 
 class TestAnswers : public Serializable {
 public:
-    virtual std::string serialize() const {
+    virtual std::string serialize() const override {
         return fmt::format("{}:{}", id(), 
                            fmt::join(answers(), ","));
     }
-    //
+    // ...
 };
 ```
 
@@ -1265,7 +1399,10 @@ std::string serialize(const TestAnswers &value) {
 </style>
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
+<!-- Note: dynamic polymorphism doesn't have to be intrusive. 
+     На самом деле динамический/статический полиморфизм и интрузивность это ортогональные концепции. И то и то
+     может быть интрузивным и не интрузивным. Я по умолчанию предпочитаю неинтрузивные решения, потому что они гибче.
+     --------------------------------------------------------------------------------------------------------- -->
 ---
 layout: image
 image: adom.png
@@ -1428,7 +1565,11 @@ class SpikedShield : public Weapon, public Shield { // Eeeeeeh?????????
 </style>
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
+<!-- Каждый раз когда вам хочется использовать ромбовидное наследование --- отвесьте себе оплеуху. Продолжайте это делать, 
+     пока вам не расхочется. Да, у нас есть кусок непотребства под названием std streams, он был создан в далекие времена когда мы
+     еще не понимали как писать библиотеки по-нормальному, и к сожалению с тех пор замены в стандартной библиотеке не появилось.
+     Каждая нормальная кодовая база содержит свою реализацию стримов.
+     --------------------------------------------------------------------------------------------------------- -->
 ---
 ---
 
@@ -1448,7 +1589,7 @@ public:
 
 class Equipment {
 public:
-    std::vector<Behaviour> behaviours;
+    std::vector<std::unique_ptr<Behaviour>> behaviours;
     // ...
 };
 
@@ -1461,19 +1602,22 @@ public:
 
 ```cpp
 // First event: sent to attacker's items to populate the damage rolls.
-struct AttackOutEvent : public Event {
+class AttackOutEvent : public Event {
+public:
     std::vector<Damage> damageRolls;
     // ...
 };
 
 // Second event: sent to attacked's items to apply armor & protection.
-struct AttackInEvent : public Event {
+class AttackInEvent : public Event {
+public:
     std::vector<Damage> damageRolls;
     // ...
 };
 
 // Third event: sent back to attacker's items to notify of success / failure.
-struct DamageEvent : public Event {
+class DamageEvent : public Event {
+public:
     std::vector<Damage> damageRolls;
     // ...    
 };
@@ -1485,7 +1629,7 @@ struct DamageEvent : public Event {
 ---
 
 ```cpp
-struct WeaponBehavior : public Behaviour {
+class WeaponBehavior : public Behaviour {
     virtual void process(Event *event) override {
         if (event->type == ATTACK_OUT_EVENT) {
             AttackOutEvent *e = static_cast<AttackOutEvent *>(event);
@@ -1499,7 +1643,7 @@ struct WeaponBehavior : public Behaviour {
     }
 }
 
-struct ShieldBehavior : public Behaviour {
+class ShieldBehavior : public Behaviour {
     virtual void process(Event *event) override {
         if (event->type == ATTACK_IN_EVENT) {
             AttackInEvent *e = static_cast<AttackInEvent *>(event);
@@ -1518,7 +1662,7 @@ struct ShieldBehavior : public Behaviour {
 ---
 
 ```cpp
-struct VampiricBehavior : public Behaviour {
+class VampiricBehavior : public Behaviour {
     virtual void process(Event *event) override {
         if (event->type == DAMAGE_EVENT) {
             DamageEvent *e = static_cast<DamageEvent *>(event);
@@ -1529,7 +1673,7 @@ struct VampiricBehavior : public Behaviour {
                         owner().owner(), 
                         SpellEvent(
                             owner(),
-                            SPELL_DARKHEALING, 
+                            SPELL_VAMPIRIC_HEALING, 
                             damage.amount / 2
                         )
                     );
@@ -1545,7 +1689,7 @@ struct VampiricBehavior : public Behaviour {
 ---
 ---
 
-### Rule #4:
+## Rule #4:
 ### **Создавайте ортогональные и взаимозаменяемые абстракции**
 
 На выходе имеем невероятную гибкость:
@@ -1557,14 +1701,14 @@ auto TalkingSword        = WeaponBehavior() & TauntBehavior(tauntList, 0.01);
 auto SwordOfExplosions   = WeaponBehavior() & RandomCastBehavior(SPELL_FIREBALL, 0.01);
 
 auto RingOfIce           = ResistanceBehavior(DMG_WATER, 0.0) & 
-                           VulnerabilityBehavior(DMG_ICE, 2.0) & 
+                           VulnerabilityBehavior(DMG_FIRE, 2.0) & 
                            FreezingBehavior();
 // ...
 ```
 
 <br/>
 
-А еще мы на самом деле придумали Entity Component System (ECS). Рекомендую [доклад Brian Bucklew про Caves of Qud](https://www.youtube.com/watch?v=U03XXzcThGU).
+А еще мы на самом деле придумали часть Entity Component System (ECS). Рекомендую [доклад Brian Bucklew про Caves of Qud](https://www.youtube.com/watch?v=U03XXzcThGU).
 
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
@@ -1645,8 +1789,29 @@ void myAwesomeFunction() {
 }
 ```
 
+
+
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp
+// Fetch twitter posts asynchronously.
+Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+    return network
+        .request(makeNetworkRequest(opts))
+        .then([](std::string_view jsonData) {
+            TwitterPosts result;
+            deserialize(Json::parse(jsonData), &result);
+            return result;
+        });
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- в идеале мы хотим писать функции как обычно, и мы хотим composability как у обычных функций.
+     --------------------------------------------------------------------------------------------------------- -->
 ---
 ---
 
@@ -1678,7 +1843,8 @@ TwitterPosts fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
+<!-- в идеале мы хотим писать функции как обычно, и мы хотим composability как у обычных функций.
+     --------------------------------------------------------------------------------------------------------- -->
 ---
 ---
 
@@ -1699,29 +1865,34 @@ Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions
 <div align="center">VS</div>
 <br/>
 
-```cpp {1-3}
-// Fetch twitter posts asynchronously, but now we have co_await everywhere.
+```cpp {1-3,6}
+// Fetch twitter posts asynchronously!
 CoResult<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
     auto jsonData = co_await network.request(makeNetworkRequest(opts));
     TwitterPosts result;
     deserialize(Json::parse(jsonData), &result);
-    return result;
+    co_return result;
 }
 ```
 
+См. [What Color is Your Function](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/) by [Bob Nystrom
+](https://github.com/munificent).
+
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
+<!-- Это не идеальное решение. Дебаг ужасный. Плюс надо аллокатор протаскивать по всему стеку, иначе тут аллокация 
+     на каждый стекфрейм.
+     --------------------------------------------------------------------------------------------------------- -->
 ---
 ---
 
-### Rule #5:
+## Rule #5:
 ### **Итерируйтесь!**
 
 <br/>
 
 * Начинайте с написания клиентского кода, пробуйте разные варианты API, оставляйте тот, что лучше подходит под ваши use cases.
-* Иногда решения нет. Для приятной глазу асинхронности нужна поддержка корутин из коробки.
-* Иногда можно поправить core language (привет mdspan).
+* Иногда решения нет. Для приятной глазу асинхронности нужна поддержка корутин из коробки. *Или можно сходить на доклад [@apolukhin](https://github.com/apolukhin).*
+* Иногда можно поправить core language (привет <span class="font-mono">mdspan</span>).
 
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
@@ -1730,15 +1901,66 @@ CoResult<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOpt
 ---
 ---
 
-Cheat Sheet.
-1. Проектируйте API так, чтобы его нельзя было использовать неправильно.
-2. Divide & Conquer: Дробите!
-3. Тратьте время на придумывание хороших имен!
-4. Ортогональность + Взаимозаменяемость = 💪
-5. Итерируйтесь!
+## Cheat Sheet
 
+<br/>
+
+1. Проектируйте API так, чтобы его нельзя было использовать неправильно.\
+   *<div class="text-sm">Все возможные способы использования вашего API должны или отрабатывать корректно, или завершаться ошибкой!</div>*
+2. Divide & Conquer: Дробите!\
+   *<div class="text-sm">На классы, на модули, на функции, на слои абстракции.</div>*
+3. Тратьте время на придумывание хороших имен!\
+   *<div class="text-sm">Если не получается придумать нормальное имя — значит вы придумали плохую абстракцию.</div>*
+4. Создавайте ортогональные и взаимозаменяемые абстракции.\
+   *<div class="text-sm">Хорошее правило которое почти всегда верно — данные ортогональны логике. Вдохновляйтесь STL!</div>*
+5. Итерируйтесь!\
+   *<div class="text-sm">И ждите статью на Хабре.</div>*
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
 
 ---
 layout: end
 ---
 
+---
+layout: end
+---
+
+---
+layout: end
+---
+
+---
+---
+
+```cpp {all|4-5}
+class Table {
+public:
+    void beginTransaction();
+    void setValue(int key, int value);
+    void commitTransaction();
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {all}
+class Table {
+public:
+    Transaction beginTransaction();
+}
+
+class Transaction {
+public:
+    void setValue(int key, int value);
+    void commit();
+    ~Transaction(); // Commits if not committed already.
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
