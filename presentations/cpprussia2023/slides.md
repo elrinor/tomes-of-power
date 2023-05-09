@@ -60,7 +60,6 @@ layout: full
 ```cpp {all}
 class Buffer {
 public:
-    Buffer(size_t size = 0);
     Buffer(const char *data, size_t size);
 
     Buffer(const Buffer &buffer)
@@ -105,11 +104,127 @@ mindmap
 
 
 [The Wonderfully Terrible World of C and C++ Encoding APIs](https://thephd.dev/the-c-c++-rust-string-text-encoding-api-landscape):
+
+<table>
+  <tbody>
+    <tr>
+      <td>Feature Set 👇 vs. Library 👉</td>
+      <td>boost.text</td>
+      <td>utf8cpp</td>
+      <td>Standard C</td>
+      <td>Standard C++</td>
+      <td>Windows API</td>
+    </tr>
+    <tr>
+      <td>Handles Legacy Encodings</td>
+      <td>❌</td>
+      <td>❌</td>
+      <td>🤨</td>
+      <td>🤨</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Handles UTF Encodings</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>🤨</td>
+      <td>🤨</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Bounded and Safe Conversion API</td>
+      <td>❌</td>
+      <td>❌</td>
+      <td>🤨</td>
+      <td>✅</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Assumed Valid Conversion API</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>❌</td>
+      <td>❌</td>
+      <td>❌</td>
+    </tr>
+    <tr>
+      <td>Unbounded Conversion API</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>❌</td>
+      <td>❌</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Counting API</td>
+      <td>❌</td>
+      <td>🤨</td>
+      <td>❌</td>
+      <td>❌</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Validation API</td>
+      <td>❌</td>
+      <td>🤨</td>
+      <td>❌</td>
+      <td>❌</td>
+      <td>❌</td>
+    </tr>
+    <tr>
+      <td>Bulk Conversions</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>🤨</td>
+      <td>🤨</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Single Conversions</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>❌</td>
+    </tr>
+    <tr>
+      <td>Custom Error Handling</td>
+      <td>❌</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>❌</td>
+    </tr>
+    <tr>
+      <td>Updates Input Range (How Much Read™)</td>
+      <td>✅</td>
+      <td>❌</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>❌</td>
+    </tr>
+    <tr>
+      <td>Updates Output Range (How Much Written™)</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>❌</td>
+    </tr>
+  </tbody>
+</table>
+
 > - Standard C: it’s <span class="text-red-600  ">trash</span>.
 > - Standard C++: provides next-to-nothing of its own that is not sourced from C, and when it does it somehow makes it worse. <span class="text-red-600">Also trash</span>. 
-> - Windows API: it does not handle UTF-32.
-> - libiconv: error handling and insertion of replacements is implementation-defined, and the replacements are also implementation-defined, and whether or not it even does it is implementation-defined, and whether or not it’s any good is — you guessed it! — implementation-defined.  
-> ...
+
+<style>
+.slidev-layout { td {
+    font-size: 14px !important;
+    padding: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}}
+</style>
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <!-- Попробуйте найти нормальную библиотеку для работы с ini файлами, лол! 
@@ -173,8 +288,100 @@ public:
     std::string path(std::string_view tableName);
 
     CsvStats stats(std::string_view tableName);
-    void setStats(std::string_view tableName, CsvStats stats); // Updates metadata file
+    void setStats(std::string_view tableName, CsvStats stats);
 };
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {1-5}
+struct CsvStats {
+    DateTime startTime; 
+    DateTime endTime;   // Some per-table aggregates: start & end time,
+    // ...              // maybe per-column min, max & mean values.
+};
+
+class CsvDb {
+public:
+    explicit CsvDb(std::string_view path);
+
+    std::string path(std::string_view tableName);
+
+    CsvStats stats(std::string_view tableName);
+    void setStats(std::string_view tableName, CsvStats stats);
+};
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {9}
+struct CsvStats {
+    DateTime startTime;
+    DateTime endTime;
+    // ...
+};
+
+class CsvDb {
+public:
+    explicit CsvDb(std::string_view path); // Path do data folder.
+
+    std::string path(std::string_view tableName);
+
+    CsvStats stats(std::string_view tableName);
+    void setStats(std::string_view tableName, CsvStats stats);
+};
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {11}
+struct CsvStats {
+    DateTime startTime;
+    DateTime endTime;
+    // ...
+};
+
+class CsvDb {
+public:
+    explicit CsvDb(std::string_view path);
+
+    std::string path(std::string_view tableName); // Returns path to table CSV for reading.
+
+    CsvStats stats(std::string_view tableName);
+    void setStats(std::string_view tableName, CsvStats stats);
+};
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {13-15}
+struct CsvStats {
+    DateTime startTime;
+    DateTime endTime;
+    // ...
+};
+
+class CsvDb {
+public:
+    explicit CsvDb(std::string_view path);
+
+    std::string path(std::string_view tableName);
+
+    CsvStats stats(std::string_view tableName);                // Getter & setter for stats.
+    void setStats(std::string_view tableName, CsvStats stats); // Stats are stored in db.info,
+};                                                             // and flushed on setStats.
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
@@ -196,7 +403,7 @@ public:
     std::string path(std::string_view tableName);
 
     CsvStats stats(std::string_view tableName);
-    void setStats(std::string_view tableName, CsvStats stats); // Updates metadata file
+    void setStats(std::string_view tableName, CsvStats stats); // Is this safe?
 };
 ```
 
@@ -220,7 +427,7 @@ public:
 
     CsvStats stats(std::string_view tableName);
     void replace(std::string_view tableName, std::string_view newPath, 
-                 CsvStats newStats);
+                 CsvStats newStats); // Safer!
 };
 ```
 
@@ -243,7 +450,7 @@ public:
     CsvReader open(std::string_view tableName);
 
     CsvStats stats(std::string_view tableName);
-    CsvWriter replace(std::string_view tableName);
+    CsvWriter replace(std::string_view tableName); // WAY safer!
 };
 ```
 
@@ -261,7 +468,7 @@ struct CsvStats {
 
 class CsvDb {
 public:
-    explicit CsvDb(std::filesystem::path path);
+    explicit CsvDb(std::filesystem::path path); // Use path for paths!
 
     CsvReader open(std::string_view tableName);
 
@@ -336,7 +543,7 @@ public:
 ---
 ---
 
-```cpp {all|15-16}
+```cpp {all}
 class Window {
 public:
     void setTitle(const std::string &title);
@@ -345,14 +552,139 @@ public:
     void resize(const Size &size);
     Size size() const;
 
-    Point position();
     void setPosition(Point point);
+    Point position();
 
     // ...
 
     void initOpenGL();
     void bindContext();
     void swapBuffers();
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {3-10}
+class Window {
+public:
+    void setTitle(const std::string &title);    //
+    std::string title() const;                  //
+                                                //
+    void resize(const Size &size);              // Window properties...
+    Size size() const;                          //
+                                                //
+    void setPosition(Point point);              //
+    Point position();                           //
+
+    // ...
+
+    void initOpenGL();
+    void bindContext();
+    void swapBuffers();
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {14}
+class Window {
+public:
+    void setTitle(const std::string &title);
+    std::string title() const; 
+       
+    void resize(const Size &size); 
+    Size size() const;
+       
+    void setPosition(Point point);
+    Point position();   
+
+    // ...
+
+    void initOpenGL(); // Initializes OpenGL context for this Window.
+    void bindContext();
+    void swapBuffers();
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {15}
+class Window {
+public:
+    void setTitle(const std::string &title);
+    std::string title() const; 
+       
+    void resize(const Size &size); 
+    Size size() const;
+       
+    void setPosition(Point point);
+    Point position();   
+
+    // ...
+
+    void initOpenGL(); 
+    void bindContext(); // Binds this Window's context for the current thread.
+    void swapBuffers();
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {16}
+class Window {
+public:
+    void setTitle(const std::string &title);
+    std::string title() const; 
+       
+    void resize(const Size &size); 
+    Size size() const;
+       
+    void setPosition(Point point);
+    Point position();   
+
+    // ...
+
+    void initOpenGL(); 
+    void bindContext();
+    void swapBuffers(); // Swaps buffers & starts next frame.
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {15-16}
+class Window {
+public:
+    void setTitle(const std::string &title);
+    std::string title() const; 
+       
+    void resize(const Size &size); 
+    Size size() const;
+       
+    void setPosition(Point point);
+    Point position();   
+
+    // ...
+
+    void initOpenGL(); 
+    void bindContext(); // OOPS: assert(_glInitialized); inside.
+    void swapBuffers(); // Can only be called after a call to initOpenGL().
 }
 ```
 
@@ -397,34 +729,30 @@ public:
 
 <br/>
 
-- Количество возможных взаимодействий (и багов) внутри класса растет как квадрат от размера класса. Меньше классы — меньше проблем!
-- Аналогично работает и с самими классами. Классы в "помойке классов" начинают зависеть друг от друга, снова квадрат зависимостей и баги. Дробите на библиотеки!
-- Эта же логика применима к функциям. Функции на несколько экранов означают, что вам не хватает каких-то базовых абстракций.
 - Помните про S in SOLID. \
   *"The Single-responsibility principle: There should never be more than one reason for a class to change."*
+- Количество возможных взаимодействий (и багов) внутри класса растет как квадрат от размера класса. Меньше классы — меньше проблем!
+- Мелкие классы легче читать и осознавать.
+- Аналогично работает и с библиотеками. Классы в "помойке классов" начинают зависеть друг от друга, снова квадрат зависимостей и баги. Дробите на более мелкие библиотеки!
+- Эта же логика применима к функциям.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <!-- --------------------------------------------------------------------------------------------------------- -->
 ---
 ---
 
-```cpp
-void initStrings(const Buffer &buffer) {
-    size_t pos = 0;
+```cpp {all}
+void parseStrings(const Buffer &buffer, std::vector<std::string> *result) { // Parses a buffer of null-terminated
+    size_t pos = 0;                                                         // strings.
     while (pos < buffer.size()) {
-        const char *nextPos = static_cast<const char *>(memchr(&buffer.data()[pos], '\0', buffer.size() - pos));
-        size_t size = nextPos ? (nextPos - &buffer.data()[pos]) : (buffer.size() - pos);
-        std::string str = std::string(&buffer.data()[pos], size);
+        const char *nextPos = static_cast<const char *>(memchr(buffer.data() + pos, '\0', buffer.size() - pos));
+        size_t size = (nextPos ? nextPos - buffer.data() : buffer.size()) - pos;
+        std::string str = std::string(buffer.data() + pos, size);
 
-        if (!str.empty() && str[0] == '"') {
-            if (str.size() > 2) {
-                str = str.substr(1, str.size() - 2);
-            } else {
-                str = "";
-            }
-        }
+        if (str.size() >= 2 && str.front() == '"' && str.back() == '"')
+            str = str.substr(1, str.size() - 2);
 
-        this->_strings.push_back(str);
+        result->push_back(std::move(str));
         pos += size;
     }
 }
@@ -438,42 +766,183 @@ void initStrings(const Buffer &buffer) {
 </style>
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- В этом коде кстати есть багло. += size + 1 дожно быть.
-     --------------------------------------------------------------------------------------------------------- -->
+<!-- --------------------------------------------------------------------------------------------------------- -->
 ---
 ---
 
-```cpp
-void initStrings(const Buffer &buffer) {
+```cpp {3-4}
+void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
     size_t pos = 0;
-    while (pos < buffer.size()) {
-        const char *nextPos = static_cast<const char *>(memchr(&buffer.data()[pos], '\0', buffer.size() - pos));
-        size_t size = nextPos ? (nextPos - &buffer.data()[pos]) : (buffer.size() - pos);
-        std::string str = std::string(&buffer.data()[pos], size);
+    while (pos < buffer.size()) { // Find next null terminator ↓
+        const char *nextPos = static_cast<const char *>(memchr(buffer.data() + pos, '\0', buffer.size() - pos));
+        size_t size = (nextPos ? nextPos - buffer.data() : buffer.size()) - pos;
+        std::string str = std::string(buffer.data() + pos, size);
 
-        if (!str.empty() && str[0] == '"') {
-            if (str.size() > 2) {
-                str = str.substr(1, str.size() - 2);
-            } else {
-                str = "";
-            }
-        }
+        if (str.size() >= 2 && str.front() == '"' && str.back() == '"')
+            str = str.substr(1, str.size() - 2);
 
-        this->_strings.push_back(str);
+        result->push_back(std::move(str));
         pos += size;
     }
 }
 ```
 
-<div align="center">VS</div>
+<style>
+.slidev-layout { pre, code {
+    font-size: 10px !important;
+    line-height: 14px !important;
+}}
+</style>
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {5-6}
+void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
+    size_t pos = 0;
+    while (pos < buffer.size()) {
+        const char *nextPos = static_cast<const char *>(memchr(buffer.data() + pos, '\0', buffer.size() - pos));
+        size_t size = (nextPos ? nextPos - buffer.data() : buffer.size()) - pos;
+        std::string str = std::string(buffer.data() + pos, size); // Extract next string.
+
+        if (str.size() >= 2 && str.front() == '"' && str.back() == '"')
+            str = str.substr(1, str.size() - 2);
+
+        result->push_back(std::move(str));
+        pos += size;
+    }
+}
+```
+
+<style>
+.slidev-layout { pre, code {
+    font-size: 10px !important;
+    line-height: 14px !important;
+}}
+</style>
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {8-9}
+void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
+    size_t pos = 0;
+    while (pos < buffer.size()) {
+        const char *nextPos = static_cast<const char *>(memchr(buffer.data() + pos, '\0', buffer.size() - pos));
+        size_t size = (nextPos ? nextPos - buffer.data() : buffer.size()) - pos;
+        std::string str = std::string(buffer.data() + pos, size);
+
+        if (str.size() >= 2 && str.front() == '"' && str.back() == '"')
+            str = str.substr(1, str.size() - 2); // Unquote a string if it's quoted.
+
+        result->push_back(std::move(str));
+        pos += size;
+    }
+}
+```
+
+<style>
+.slidev-layout { pre, code {
+    font-size: 10px !important;
+    line-height: 14px !important;
+}}
+</style>
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {11-12}
+void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
+    size_t pos = 0;
+    while (pos < buffer.size()) {
+        const char *nextPos = static_cast<const char *>(memchr(buffer.data() + pos, '\0', buffer.size() - pos));
+        size_t size = (nextPos ? nextPos - buffer.data() : buffer.size()) - pos;
+        std::string str = std::string(buffer.data() + pos, size);
+
+        if (str.size() >= 2 && str.front() == '"' && str.back() == '"')
+            str = str.substr(1, str.size() - 2);
+
+        result->push_back(std::move(str)); // Write results &
+        pos += size;                       // prepare to parse the next string.
+    }
+}
+```
+
+<style>
+.slidev-layout { pre, code {
+    font-size: 10px !important;
+    line-height: 14px !important;
+}}
+</style>
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {12}
+void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
+    size_t pos = 0;
+    while (pos < buffer.size()) {
+        const char *nextPos = static_cast<const char *>(memchr(buffer.data() + pos, '\0', buffer.size() - pos));
+        size_t size = (nextPos ? nextPos - buffer.data() : buffer.size()) - pos;
+        std::string str = std::string(buffer.data() + pos, size);
+
+        if (str.size() >= 2 && str.front() == '"' && str.back() == '"')
+            str = str.substr(1, str.size() - 2);
+
+        result->push_back(std::move(str));
+        pos += size; // BUG: should be pos += size + 1.
+    }
+}
+```
+
+<style>
+.slidev-layout { pre, code {
+    font-size: 10px !important;
+    line-height: 14px !important;
+}}
+</style>
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
 
 ```cpp
-void initStrings(const Buffer &buffer) {
+void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
+    size_t pos = 0;
+    while (pos < buffer.size()) {
+        const char *nextPos = static_cast<const char *>(memchr(buffer.data() + pos, '\0', buffer.size() - pos));
+        size_t size = (nextPos ? nextPos - buffer.data() : buffer.size()) - pos;
+        std::string str = std::string(buffer.data() + pos, size);
+
+        if (str.size() >= 2 && str.front() == '"' && str.back() == '"')
+            str = str.substr(1, str.size() - 2);
+
+        result->push_back(std::move(str));
+        pos += size + 1;
+    }
+}
+```
+
+<br/>
+<div align="center">VS</div>
+<br/>
+
+```cpp
+std::vector<std::string> parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
     MemoryInput input(buffer);
 
     std::string line;
     while (input.readLine(&line, '\0'))
-        this->_strings.push_back(unquote(line));
+        result->push_back(unquote(line));
 }
 ```
 
@@ -489,37 +958,34 @@ void initStrings(const Buffer &buffer) {
 ---
 ---
 
-```cpp {2-6}
-void initStrings(const Buffer &buffer) {
+```cpp {3-6,12}
+void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
     size_t pos = 0;
     while (pos < buffer.size()) {
-        const char *nextPos = static_cast<const char *>(memchr(&buffer.data()[pos], '\0', buffer.size() - pos));
-        size_t size = nextPos ? (nextPos - &buffer.data()[pos]) : (buffer.size() - pos);
-        std::string str = std::string(&buffer.data()[pos], size);
+        const char *nextPos = static_cast<const char *>(memchr(buffer.data() + pos, '\0', buffer.size() - pos));
+        size_t size = (nextPos ? nextPos - buffer.data() : buffer.size()) - pos;
+        std::string str = std::string(buffer.data() + pos, size);
 
-        if (!str.empty() && str[0] == '"') {
-            if (str.size() > 2) {
-                str = str.substr(1, str.size() - 2);
-            } else {
-                str = "";
-            }
-        }
+        if (str.size() >= 2 && str.front() == '"' && str.back() == '"')
+            str = str.substr(1, str.size() - 2);
 
-        this->_strings.push_back(str);
-        pos += size;
+        result->push_back(std::move(str));
+        pos += size + 1;
     }
 }
 ```
 
+<br/>
 <div align="center">VS</div>
+<br/>
 
-```cpp {2-5}
-void initStrings(const Buffer &buffer) {
+```cpp {5}
+std::vector<std::string> parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
     MemoryInput input(buffer);
 
     std::string line;
     while (input.readLine(&line, '\0'))
-        this->_strings.push_back(unquote(line));
+        result->push_back(unquote(line));
 }
 ```
 
@@ -535,83 +1001,34 @@ void initStrings(const Buffer &buffer) {
 ---
 ---
 
-```cpp {8-16}
-void initStrings(const Buffer &buffer) {
+```cpp {8-11}
+void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
     size_t pos = 0;
     while (pos < buffer.size()) {
-        const char *nextPos = static_cast<const char *>(memchr(&buffer.data()[pos], '\0', buffer.size() - pos));
-        size_t size = nextPos ? (nextPos - &buffer.data()[pos]) : (buffer.size() - pos);
-        std::string str = std::string(&buffer.data()[pos], size);
+        const char *nextPos = static_cast<const char *>(memchr(buffer.data() + pos, '\0', buffer.size() - pos));
+        size_t size = (nextPos ? nextPos - buffer.data() : buffer.size()) - pos;
+        std::string str = std::string(buffer.data() + pos, size);
 
-        if (!str.empty() && str[0] == '"') {
-            if (str.size() > 2) {
-                str = str.substr(1, str.size() - 2);
-            } else {
-                str = "";
-            }
-        }
+        if (str.size() >= 2 && str.front() == '"' && str.back() == '"')
+            str = str.substr(1, str.size() - 2);
 
-        this->_strings.push_back(str);
-        pos += size;
+        result->push_back(std::move(str));
+        pos += size + 1;
     }
 }
 ```
 
+<br/>
 <div align="center">VS</div>
+<br/>
 
 ```cpp {6}
-void initStrings(const Buffer &buffer) {
+std::vector<std::string> parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
     MemoryInput input(buffer);
 
     std::string line;
     while (input.readLine(&line, '\0'))
-        this->_strings.push_back(unquote(line));
-}
-```
-
-<style>
-.slidev-layout { pre, code {
-    font-size: 10px !important;
-    line-height: 14px !important;
-}}
-</style>
-
-<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
----
----
-
-```cpp {17}
-void initStrings(const Buffer &buffer) {
-    size_t pos = 0;
-    while (pos < buffer.size()) {
-        const char *nextPos = static_cast<const char *>(memchr(&buffer.data()[pos], '\0', buffer.size() - pos));
-        size_t size = nextPos ? (nextPos - &buffer.data()[pos]) : (buffer.size() - pos);
-        std::string str = std::string(&buffer.data()[pos], size);
-
-        if (!str.empty() && str[0] == '"') {
-            if (str.size() > 2) {
-                str = str.substr(1, str.size() - 2);
-            } else {
-                str = "";
-            }
-        }
-
-        this->_strings.push_back(str);
-        pos += size; // BUG: should be pos += size + 1;
-    }
-}
-```
-
-<div align="center">VS</div>
-
-```cpp {0}
-void initStrings(const Buffer &buffer) {
-    MemoryInput input(buffer);
-
-    std::string line;
-    while (input.readLine(&line, '\0'))
-        this->_strings.push_back(unquote(line));
+        result->push_back(unquote(line));
 }
 ```
 
@@ -635,7 +1052,6 @@ void initStrings(const Buffer &buffer) {
 - Дробить — это еще и про слои абстракции!
 - Как только видите сложный код — думайте, каких абстракций вам не хватает!
 - Если ваш код все еще сложный — дробите дальше!
-- Если у вас уже есть плохой API — не стесняйтесь писать адаптеры (привет <span class="font-mono">std::chrono</span>).
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <!-- --------------------------------------------------------------------------------------------------------- -->
@@ -646,13 +1062,15 @@ void initStrings(const Buffer &buffer) {
 template<class T>
 class QFuture {
 public:
+    QFuture(const QFuture &other);
+
     const_iterator begin() const;
     const_iterator end() const;
-    QList<T> results() const
+    QList<T> results() const;
 
     void cancel();
-    T result() const;
     T takeResult();
+    T result() const;
 
     auto then(Function &&function);
     auto then(QThreadPool *pool, Function &&function);
@@ -673,17 +1091,19 @@ public:
 ---
 ---
 
-```cpp {4-6}
+```cpp {4}
 template<class T>
 class QFuture {
 public:
+    QFuture(const QFuture &other); // QFuture is ref-counted.
+
     const_iterator begin() const;
-    const_iterator end() const; // Async sequence interface.
-    QList<T> results() const
+    const_iterator end() const;
+    QList<T> results() const;
 
     void cancel();
-    T result() const;
     T takeResult();
+    T result() const;
 
     auto then(Function &&function);
     auto then(QThreadPool *pool, Function &&function);
@@ -696,7 +1116,7 @@ public:
     bool isValid() const;
 
     // ...
-}
+};
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
@@ -704,17 +1124,19 @@ public:
 ---
 ---
 
-```cpp {9}
+```cpp {6-8}
 template<class T>
 class QFuture {
 public:
-    const_iterator begin() const;
-    const_iterator end() const;
-    QList<T> results() const
+    QFuture(const QFuture &other); 
+
+    const_iterator begin() const; //
+    const_iterator end() const;   // Async sequence interface.
+    QList<T> results() const;     //
 
     void cancel();
-    T result() const; // Shared access interface.
     T takeResult();
+    T result() const;
 
     auto then(Function &&function);
     auto then(QThreadPool *pool, Function &&function);
@@ -739,13 +1161,15 @@ public:
 template<class T>
 class QFuture {
 public:
+    QFuture(const QFuture &other); 
+
     const_iterator begin() const;
     const_iterator end() const;
-    QList<T> results() const
+    QList<T> results() const;
 
-    void cancel();
+    void cancel(); // Built-in cancellation support! ^_^
+    T takeResult();
     T result() const;
-    T takeResult(); // Unique access interface.
 
     auto then(Function &&function);
     auto then(QThreadPool *pool, Function &&function);
@@ -766,20 +1190,22 @@ public:
 ---
 ---
 
-```cpp {12-14}
+```cpp {11}
 template<class T>
 class QFuture {
 public:
+    QFuture(const QFuture &other); 
+
     const_iterator begin() const;
     const_iterator end() const;
-    QList<T> results() const
+    QList<T> results() const;
 
     void cancel();
+    T takeResult(); // Waits for completion & moves out the result. Support for move-only types.
     T result() const;
-    T takeResult();
 
     auto then(Function &&function);
-    auto then(QThreadPool *pool, Function &&function); // Continuations.
+    auto then(QThreadPool *pool, Function &&function);
     auto then(QObject *context, Function &&function);
 
     bool isCanceled() const;
@@ -801,17 +1227,52 @@ public:
 template<class T>
 class QFuture {
 public:
+    QFuture(const QFuture &other); 
+
     const_iterator begin() const;
     const_iterator end() const;
-    QList<T> results() const
+    QList<T> results() const;
 
     void cancel();
-    T result() const;
     T takeResult();
+    T result() const; // Waits for completion & returns a copy of result.
 
-    auto then(Function &&function); // Where is this one run? It depends...
+    auto then(Function &&function);
     auto then(QThreadPool *pool, Function &&function);
     auto then(QObject *context, Function &&function);
+
+    bool isCanceled() const;
+    bool isFinished() const;
+    bool isRunning() const;
+    bool isStarted() const;
+    bool isValid() const;
+
+    // ...
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {14-16}
+template<class T>
+class QFuture {
+public:
+    QFuture(const QFuture &other); 
+
+    const_iterator begin() const;
+    const_iterator end() const;
+    QList<T> results() const;
+
+    void cancel();
+    T takeResult();
+    T result() const;
+
+    auto then(Function &&function);                    //
+    auto then(QThreadPool *pool, Function &&function); // Continuations.
+    auto then(QObject *context, Function &&function);  //
 
     bool isCanceled() const;
     bool isFinished() const;
@@ -832,140 +1293,17 @@ public:
 template<class T>
 class QFuture {
 public:
+    QFuture(const QFuture &other); 
+
     const_iterator begin() const;
     const_iterator end() const;
-    QList<T> results() const
+    QList<T> results() const;
 
     void cancel();
-    T result() const;
     T takeResult();
-
-    auto then(Function &&function);
-    auto then(QThreadPool *pool, Function &&function);
-    auto then(QObject *context, Function &&function); // Will crash if QObject is destroyed!
-                                                       
-    bool isCanceled() const;                          
-    bool isFinished() const;
-    bool isRunning() const;
-    bool isStarted() const;
-    bool isValid() const;
-
-    // ...
-}
-```
-
-<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- Note that this is NOT how QObject::connect works!
-  -- --------------------------------------------------------------------------------------------------------- -->
----
----
-
-```cpp {19}
-template<class T>
-class QFuture {
-public:
-    const_iterator begin() const;
-    const_iterator end() const;
-    QList<T> results() const
-
-    void cancel();
     T result() const;
-    T takeResult();
 
-    auto then(Function &&function);
-    auto then(QThreadPool *pool, Function &&function);
-    auto then(QObject *context, Function &&function); 
-
-    bool isCanceled() const;
-    bool isFinished() const;
-    bool isRunning() const;
-    bool isStarted() const; // Started but not yet running? Why would you need this?
-    bool isValid() const;
-
-    // ...
-}
-```
-
-<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
----
----
-
-```cpp {20}
-template<class T>
-class QFuture {
-public:
-    const_iterator begin() const;
-    const_iterator end() const;
-    QList<T> results() const
-
-    void cancel();
-    T result() const;
-    T takeResult();
-
-    auto then(Function &&function);
-    auto then(QThreadPool *pool, Function &&function);
-    auto then(QObject *context, Function &&function); 
-
-    bool isCanceled() const;
-    bool isFinished() const;
-    bool isRunning() const;
-    bool isStarted() const;
-    bool isValid() const; // takeResult() hasn't been called yet?
-
-    // ...
-}
-```
-
-<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
----
----
-
-```cpp {16-20}
-template<class T>
-class QFuture {
-public:
-    const_iterator begin() const;
-    const_iterator end() const;
-    QList<T> results() const
-
-    void cancel();
-    T result() const;
-    T takeResult();
-
-    auto then(Function &&function);
-    auto then(QThreadPool *pool, Function &&function);
-    auto then(QObject *context, Function &&function); 
-
-    bool isCanceled() const;
-    bool isFinished() const; // Why do we even have all these state observers?
-    bool isRunning() const;  // Why not a single State state() function?
-    bool isStarted() const;
-    bool isValid() const;   
-
-    // ...
-}
-```
-
-<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
----
----
-
-```cpp {2,22}
-template<class T>
-class QWhatExactlyIsThisMonstrosity /* ¯\_(ツ)_/¯ */ {
-public:
-    const_iterator begin() const;
-    const_iterator end() const;
-    QList<T> results() const
-
-    void cancel();
-    T result() const;
-    T takeResult();
-
-    auto then(Function &&function);
+    auto then(Function &&function); // Where is this one run? It depends...
     auto then(QThreadPool *pool, Function &&function);
     auto then(QObject *context, Function &&function);
 
@@ -973,6 +1311,171 @@ public:
     bool isFinished() const;
     bool isRunning() const;
     bool isStarted() const;
+    bool isValid() const;
+
+    // ...
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {16-17}
+template<class T>
+class QFuture {
+public:
+    QFuture(const QFuture &other); 
+
+    const_iterator begin() const;
+    const_iterator end() const;
+    QList<T> results() const;
+
+    void cancel();
+    T takeResult();
+    T result() const;
+
+    auto then(Function &&function);
+    auto then(QThreadPool *pool, Function &&function);
+    auto then(QObject *context, Function &&function); // Unlike QObject::connect, this WILL CRASH 
+                                                      // if you delete the context object.
+    bool isCanceled() const;
+    bool isFinished() const;
+    bool isRunning() const;
+    bool isStarted() const;
+    bool isValid() const;
+
+    // ...
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {18-22}
+template<class T>
+class QFuture {
+public:
+    QFuture(const QFuture &other); 
+
+    const_iterator begin() const;
+    const_iterator end() const;
+    QList<T> results() const;
+
+    void cancel();
+    T takeResult();
+    T result() const;
+
+    auto then(Function &&function);
+    auto then(QThreadPool *pool, Function &&function);
+    auto then(QObject *context, Function &&function);  
+                                                      
+    bool isCanceled() const; //
+    bool isFinished() const; //
+    bool isRunning() const;  // State observers (not all of them).
+    bool isStarted() const;  //
+    bool isValid() const;    //
+
+    // ...
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {21}
+template<class T>
+class QFuture {
+public:
+    QFuture(const QFuture &other); 
+
+    const_iterator begin() const;
+    const_iterator end() const;
+    QList<T> results() const;
+
+    void cancel();
+    T takeResult();
+    T result() const;
+
+    auto then(Function &&function);
+    auto then(QThreadPool *pool, Function &&function);
+    auto then(QObject *context, Function &&function); 
+
+    bool isCanceled() const;
+    bool isFinished() const;
+    bool isRunning() const;
+    bool isStarted() const; // Started but not yet running? WHY???
+    bool isValid() const;
+
+    // ...
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {18-22}
+template<class T>
+class QFuture {
+public:
+    QFuture(const QFuture &other); 
+
+    const_iterator begin() const;
+    const_iterator end() const;
+    QList<T> results() const;
+
+    void cancel();
+    T takeResult();
+    T result() const;
+
+    auto then(Function &&function);
+    auto then(QThreadPool *pool, Function &&function);
+    auto then(QObject *context, Function &&function); 
+
+    bool isCanceled() const; //
+    bool isFinished() const; // Why do we even have all these state observers?
+    bool isRunning() const;  // Why not a single State state() function?
+    bool isStarted() const;  //
+    bool isValid() const;    //
+
+    // ...
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {2,4,6-8,11-12,24}
+template<class T>
+class QWhatExactlyIsThisMonstrosity /* ¯\_(ツ)_/¯ */ {
+public:
+    QWhatExactlyIsThisMonstrosity(const QWhatExactlyIsThisMonstrosity &other); // Shared future?
+
+    const_iterator begin() const;                       //
+    const_iterator end() const;                         // Async sequence?
+    QList<T> results() const;                           //
+
+    void cancel();
+    T takeResult();                                     // Not so shared future?
+    T result() const;                                   // Shared future?
+
+    auto then(Function &&function);
+    auto then(QThreadPool *pool, Function &&function);
+    auto then(QObject *context, Function &&function);   // (╯°□°)╯ 彡 ┻━┻
+
+    bool isCanceled() const;
+    bool isFinished() const;
+    bool isRunning() const;
+    bool isStarted() const;                             // (╯◉▃◉)╯ ︵ ┻━┻ 
     bool isValid() const;   
 
     // P.S.: Don't even try to read the sources. They'll give you nightmares.
@@ -1005,34 +1508,33 @@ public:
 ---
 ---
 
-```cpp {2,4-7,13,15-16,22,24-25}
+```cpp {2,4-7,12,14-16,21,23-25}
 template<class T>
 class QFuturePart1 {
 public:
     void cancel();
     const_iterator begin() const;
     const_iterator end() const;
-    QList<T> results() const
-
+    QList<T> results() const;
     // ...
 }
 
 template<class T>
 class QFuturePart2 {
 public:
+    QFuture(const QFuture &other); 
     void cancel();
     T result() const;
-
-    // rest...
+    // ...
 }
 
 template<class T>
 class QFuturePart3 {
 public:
+    QFuture(QFuture &&other); 
     void cancel();
     T takeResult();
-
-    // rest...
+    // ...
 }
 ```
 
@@ -1048,33 +1550,32 @@ public:
 ---
 ---
 
-```cpp {2,4-7,13,15-16,22,24-25}
+```cpp {2,4-7,12,14-16,21,23-25}
 template<class T>
 class QGenerator {
 public:
     void cancel();
     const_iterator begin() const;
     const_iterator end() const;
-    QList<T> results() const
-
+    QList<T> results() const;
     // ...
 }
 
 template<class T>
 class QSharedFuture {
 public:
+    QFuture(const QFuture &other); 
     void cancel();
     T result() const;
-
     // ...
 }
 
 template<class T>
 class QUniqueFuture {
 public:
+    QFuture(QFuture &&other); 
     void cancel();
     T takeResult();
-
     // ...
 }
 ```
@@ -1152,7 +1653,7 @@ void myAwesomeFunction(Network &network) {
 ---
 
 ```cpp {1-2}
-// Returns a Task, task is not bound to any execution context.
+// Returns a Task that will fetch twitter posts with the provided options when run.
 Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
     return network
         .request(makeNetworkRequest(opts))
@@ -1207,13 +1708,38 @@ Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions
     return network
         .request(makeNetworkRequest(opts))
         .then([](std::string_view jsonData) { // Tasks are composable!
-            TwitterPosts result;
+            TwitterPosts result;              
             deserialize(Json::parse(jsonData), &result);
             return result;
         });
 }
 
 void myAwesomeFunction(Network &network) {
+    TwitterPosts posts = fetchTwitterPosts(network, TwitterFetchOptions("@stroustrup", 20))
+        .run(globalThreadPool())
+        .join();
+    std::print("{}", posts);
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {12-13}
+
+Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+    return network
+        .request(makeNetworkRequest(opts))
+        .then([](std::string_view jsonData) {
+            TwitterPosts result;
+            deserialize(Json::parse(jsonData), &result);
+            return result;
+        });
+}
+
+void myAwesomeFunction(Network &network) { // Fetch Bjarne's 20 latests posts ↓
     TwitterPosts posts = fetchTwitterPosts(network, TwitterFetchOptions("@stroustrup", 20))
         .run(globalThreadPool())
         .join();
@@ -1240,7 +1766,7 @@ Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions
 
 void myAwesomeFunction(Network &network) {
     TwitterPosts posts = fetchTwitterPosts(network, TwitterFetchOptions("@stroustrup", 20))
-        .run(globalThreadPool()) // Can do run(thisThread()) instead.
+        .run(globalThreadPool()) // Run in the global thread pool. Can do run(thisThread()) instead!
         .join();
     std::print("{}", posts);
 }
@@ -1266,8 +1792,33 @@ Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions
 void myAwesomeFunction(Network &network) {
     TwitterPosts posts = fetchTwitterPosts(network, TwitterFetchOptions("@stroustrup", 20))
         .run(globalThreadPool())
-        .join(); // Waits for completion.
+        .join(); // Wait for completion.
     std::print("{}", posts);
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {16}
+
+Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+    return network
+        .request(makeNetworkRequest(opts))
+        .then([](std::string_view jsonData) {
+            TwitterPosts result;
+            deserialize(Json::parse(jsonData), &result);
+            return result;
+        });
+}
+
+void myAwesomeFunction(Network &network) {
+    TwitterPosts posts = fetchTwitterPosts(network, TwitterFetchOptions("@stroustrup", 20))
+        .run(globalThreadPool())
+        .join();
+    std::print("{}", posts); // Print it out.
 }
 ```
 
@@ -1298,7 +1849,9 @@ void myAwesomeFunction(Network &network) {
 ```
 
 <br/>
-<br/>
+
+- <span class="font-mono">Task</span> и контекст выполнения ортогональны!
+
 <br/>
 <br/>
 
@@ -1318,11 +1871,11 @@ void myAwesomeFunction(Network &network) {
 * Дробите абстракции на взаимозаменяемые кусочки. <br/>
 ⇒ Реализуйте N+M вариантов вашего кода вместо N⨉M.
 
+* Вдохновляйтесь STL. Ортогональность данных и алгоритмов можно успешно распространить на очень многие предметные области!
+
 * Если у вас есть два схожих концепта — думайте, должны ли они быть взаимозаменяемы. Выбирайте подходящий под вашу задачу тип полиморфизма:
   * Виртуальные функции для динамического полиморфизма.
   * Overload sets для статического полиморфизма.
-
-* Вдохновляйтесь STL. Ортогональность данных и алгоритмов можно успешно распространить на очень многие предметные области!
 
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
@@ -1330,47 +1883,44 @@ void myAwesomeFunction(Network &network) {
 ---
 ---
 
-<br/>
-
 <div align="center">VS</div>
-
 <br/>
-
 <div grid="~ cols-2 gap-2" m="-t-2">
 
 ```cpp {all}
 // Dynamic polymorphism.
 
-class Serializable {
-public:
+struct Serializable {
     virtual std::string serialize() const = 0;
 };
 
-class TestResults : public Serializable {
-public:
+struct TestScores : Serializable {
+    std::string id;
+    std::vector<int> scores;
+
     virtual std::string serialize() const override {
-        return fmt::format("{}:{}", id(), 
-                           fmt::join(results(), ",")); 
+        return fmt::format("{}:{}", id, 
+                           fmt::join(scores, ",")); 
     }
-    // ...
 };
 
-class TestAnswers : public Serializable {
-public:
+struct TestAnswers : Serializable {
+    std::string id;
+    std::vector<std::string> answers;
+
     virtual std::string serialize() const override {
-        return fmt::format("{}:{}", id(), 
-                           fmt::join(answers(), ","));
+        return fmt::format("{}:{}", id, 
+                           fmt::join(answers, ","));
     }
-    // ...
 };
 ```
 
 ```cpp {all}
 // Static polymorphism.
 
-struct TestResults {
+struct TestScores {
     std::string id;
-    std::vector<int> results;
+    std::vector<int> scores;
 };
 
 struct TestAnswers {
@@ -1378,9 +1928,9 @@ struct TestAnswers {
     std::vector<std::string> answers;
 };
 
-std::string serialize(const TestResults &value) {
+std::string serialize(const TestScores &value) {
     return fmt::format("{}:{}", value.id, 
-                       fmt::join(value.results, ",")); 
+                       fmt::join(value.scores, ",")); 
 }
 
 std::string serialize(const TestAnswers &value) {
@@ -1388,7 +1938,6 @@ std::string serialize(const TestAnswers &value) {
                        fmt::join(value.answers, ","));
 }
 ```
-
 </div>
 
 <style>
@@ -1408,13 +1957,32 @@ layout: image
 image: adom.png
 ---
 
-
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <!-- --------------------------------------------------------------------------------------------------------- -->
 ---
 ---
 
 ```cpp
+class Equipment {
+public:
+    virtual void onUse() = 0;
+    // ...
+};
+```
+
+<style>
+.slidev-layout { pre, code {
+    font-size: 10px !important;
+    line-height: 12px !important;
+}}
+</style>
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {7-11}
 class Equipment {
 public:
     virtual void onUse() = 0;
@@ -1456,14 +2024,124 @@ public:
 class VampiricSword : public Weapon {
 public:
     virtual void onAttack(Monster &monster) override {
-        Damage damage(DMG_PHYSICAL, rollDice(3, 5) + 5); // 3d5+5.
-        monster.takeDamage(damage); // Modifies damage.
-        Damage healing(DMG_DARKMAGIC, damage.amount / 2); // Heal for half the damage dealt.
+        Damage damage(DMG_PHYSICAL, rollDice(3, 5) + 5);
+        monster.takeDamage(damage);
+        Damage healing(DMG_DARKMAGIC, damage.amount / 2);
         owner().heal(healing);
     }
     // ...
 };
+```
 
+<style>
+.slidev-layout { pre, code {
+    font-size: 10px !important;
+    line-height: 12px !important;
+}}
+</style>
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {16}
+class Equipment {
+public:
+    virtual void onUse() = 0;
+    // ...
+};
+
+class Weapon : public Equipment {
+public:
+    virtual void onAttack(Monster &monster) = 0;
+    // ...
+};
+
+class VampiricSword : public Weapon {
+public:
+    virtual void onAttack(Monster &monster) override {
+        Damage damage(DMG_PHYSICAL, rollDice(3, 5) + 5);  // Create a damage instance for 3d5+5.
+        monster.takeDamage(damage);
+        Damage healing(DMG_DARKMAGIC, damage.amount / 2);
+        owner().heal(healing);
+    }
+    // ...
+};
+```
+
+<style>
+.slidev-layout { pre, code {
+    font-size: 10px !important;
+    line-height: 12px !important;
+}}
+</style>
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {17}
+class Equipment {
+public:
+    virtual void onUse() = 0;
+    // ...
+};
+
+class Weapon : public Equipment {
+public:
+    virtual void onAttack(Monster &monster) = 0;
+    // ...
+};
+
+class VampiricSword : public Weapon {
+public:
+    virtual void onAttack(Monster &monster) override {
+        Damage damage(DMG_PHYSICAL, rollDice(3, 5) + 5); 
+        monster.takeDamage(damage);                       // Send it to monster, this call updates damage.
+        Damage healing(DMG_DARKMAGIC, damage.amount / 2);
+        owner().heal(healing);
+    }
+    // ...
+};
+```
+
+<style>
+.slidev-layout { pre, code {
+    font-size: 10px !important;
+    line-height: 12px !important;
+}}
+</style>
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {18-19}
+class Equipment {
+public:
+    virtual void onUse() = 0;
+    // ...
+};
+
+class Weapon : public Equipment {
+public:
+    virtual void onAttack(Monster &monster) = 0;
+    // ...
+};
+
+class VampiricSword : public Weapon {
+public:
+    virtual void onAttack(Monster &monster) override {
+        Damage damage(DMG_PHYSICAL, rollDice(3, 5) + 5); 
+        monster.takeDamage(damage);                       
+        Damage healing(DMG_DARKMAGIC, damage.amount / 2); // Heal the player for half the damage dealt.
+        owner().heal(healing);                            // Also, it's DARKMAGIC!
+    }
+    // ...
+};
 ```
 
 <style>
@@ -1494,9 +2172,9 @@ public:
 class VampiricSword : public Weapon {
 public:
     virtual void onAttack(Monster &monster) override {
-        Damage damage(DMG_PHYSICAL, rollDice(3, 5) + 5); // 3d5+5.
-        monster.takeDamage(damage); // Modifies damage.
-        Damage healing(DMG_DARKMAGIC, damage.amount / 2); // Heal for half the damage dealt.
+        Damage damage(DMG_PHYSICAL, rollDice(3, 5) + 5);
+        monster.takeDamage(damage);
+        Damage healing(DMG_DARKMAGIC, damage.amount / 2);
         owner().heal(healing);
     }
     // ...
@@ -1538,9 +2216,9 @@ public:
 class VampiricSword : public Weapon {
 public:
     virtual void onAttack(Monster &monster) override {
-        Damage damage(DMG_PHYSICAL, rollDice());
-        monster.takeDamage(damage); // Modifies damage.
-        Damage healing(DMG_DARKMAGIC, damage.amount / 2); // Heal for half the damage dealt.
+        Damage damage(DMG_PHYSICAL, rollDice(3, 5) + 5);
+        monster.takeDamage(damage);
+        Damage healing(DMG_DARKMAGIC, damage.amount / 2);
         owner().heal(healing);
     }
     // ...
@@ -1573,7 +2251,39 @@ class SpikedShield : public Weapon, public Shield { // Eeeeeeh?????????
 ---
 ---
 
-```cpp
+```cpp {all}
+class Event { // Every interaction in the game is an event, or several events.
+public:
+    EventType type;
+    // ...
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {7-12}
+class Event {
+public:
+    EventType type;
+    // ...
+}
+
+class Behaviour { // Behaviours are composable pieces of event-handling logic.
+public:
+    virtual void process(Event *event) = 0;
+    // ...
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {13-17}
 class Event {
 public:
     EventType type;
@@ -1584,11 +2294,10 @@ class Behaviour {
 public:
     virtual void process(Event *event) = 0;
     // ...
-    // And maybe an owner reference here.
 }
 
-class Equipment {
-public:
+class Equipment { // No subclassing,
+public:           // all logic is in behaviours ↓
     std::vector<std::unique_ptr<Behaviour>> behaviours;
     // ...
 };
@@ -1601,21 +2310,21 @@ public:
 ---
 
 ```cpp
-// First event: sent to attacker's items to populate the damage rolls.
+// First event: sent to player's items to populate the damage rolls.
 class AttackOutEvent : public Event {
 public:
     std::vector<Damage> damageRolls;
     // ...
 };
 
-// Second event: sent to attacked's items to apply armor & protection.
+// Second event: sent to monster's items to apply armor & protection.
 class AttackInEvent : public Event {
 public:
     std::vector<Damage> damageRolls;
     // ...
 };
 
-// Third event: sent back to attacker's items to notify of success / failure.
+// Third event: sent back to player's items to notify of success / failure.
 class DamageEvent : public Event {
 public:
     std::vector<Damage> damageRolls;
@@ -1628,30 +2337,162 @@ public:
 ---
 ---
 
-```cpp
+```cpp {all}
 class WeaponBehavior : public Behaviour {
     virtual void process(Event *event) override {
-        if (event->type == ATTACK_OUT_EVENT) {
-            AttackOutEvent *e = static_cast<AttackOutEvent *>(event);
+        if (event->type != ATTACK_OUT_EVENT) 
+            return;
+        AttackOutEvent *e = static_cast<AttackOutEvent *>(event);
 
-            e->damageRolls.push_back(Damage(
-                owner(),
-                DMG_PHYSICAL, 
-                owner().rollAttack()
-            ));
-        }
+        e->damageRolls.push_back(Damage(
+            owner(),
+            DMG_PHYSICAL, 
+            owner().rollAttack()
+        ));
     }
 }
 
-class ShieldBehavior : public Behaviour {
+class ArmorBehavior : public Behaviour {
     virtual void process(Event *event) override {
-        if (event->type == ATTACK_IN_EVENT) {
-            AttackInEvent *e = static_cast<AttackInEvent *>(event);
+        if (event->type != ATTACK_IN_EVENT) 
+            return;
+        AttackInEvent *e = static_cast<AttackInEvent *>(event);
 
-            for (Damage &damage : e->damageRolls)
-                if (damage.type == DMG_PHYSICAL)
-                    damage.amount = std::max(0, damage.amount - owner().armorClass());
-        }
+        for (Damage &damage : e->damageRolls)
+            if (damage.type == DMG_PHYSICAL)
+                damage.amount = std::max(0, damage.amount - owner().armorClass());
+    }
+};
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {3-5}
+class WeaponBehavior : public Behaviour {
+    virtual void process(Event *event) override {
+        if (event->type != ATTACK_OUT_EVENT) // Process only outgoing attack events.
+            return;
+        AttackOutEvent *e = static_cast<AttackOutEvent *>(event);
+
+        e->damageRolls.push_back(Damage(
+            owner(),
+            DMG_PHYSICAL, 
+            owner().rollAttack()
+        ));
+    }
+}
+
+class ArmorBehavior : public Behaviour {
+    virtual void process(Event *event) override {
+        if (event->type != ATTACK_IN_EVENT) 
+            return;
+        AttackInEvent *e = static_cast<AttackInEvent *>(event);
+
+        for (Damage &damage : e->damageRolls)
+            if (damage.type == DMG_PHYSICAL)
+                damage.amount = std::max(0, damage.amount - owner().armorClass());
+    }
+};
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {7-11}
+class WeaponBehavior : public Behaviour {
+    virtual void process(Event *event) override {
+        if (event->type != ATTACK_OUT_EVENT)
+            return;
+        AttackOutEvent *e = static_cast<AttackOutEvent *>(event);
+
+        e->damageRolls.push_back(Damage( // Record a damage roll that's:
+            owner(),                     // Dealt by this weapon,
+            DMG_PHYSICAL,                // Is physical,
+            owner().rollDamage()         // With weapon-specific damage.
+        ));
+    }
+}
+
+class ArmorBehavior : public Behaviour {
+    virtual void process(Event *event) override {
+        if (event->type != ATTACK_IN_EVENT) 
+            return;
+        AttackInEvent *e = static_cast<AttackInEvent *>(event);
+
+        for (Damage &damage : e->damageRolls)
+            if (damage.type == DMG_PHYSICAL)
+                damage.amount = std::max(0, damage.amount - owner().armorClass());
+    }
+};
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {17-19}
+class WeaponBehavior : public Behaviour {
+    virtual void process(Event *event) override {
+        if (event->type != ATTACK_OUT_EVENT)
+            return;
+        AttackOutEvent *e = static_cast<AttackOutEvent *>(event);
+
+        e->damageRolls.push_back(Damage( 
+            owner(),                     
+            DMG_PHYSICAL,                
+            owner().rollDamage()         
+        ));
+    }
+}
+
+class ArmorBehavior : public Behaviour {
+    virtual void process(Event *event) override {
+        if (event->type != ATTACK_IN_EVENT) // Process only incoming attack events.
+            return;
+        AttackInEvent *e = static_cast<AttackInEvent *>(event);
+
+        for (Damage &damage : e->damageRolls)
+            if (damage.type == DMG_PHYSICAL)
+                damage.amount = std::max(0, damage.amount - owner().armorClass());
+    }
+};
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {21-23}
+class WeaponBehavior : public Behaviour {
+    virtual void process(Event *event) override {
+        if (event->type != ATTACK_OUT_EVENT)
+            return;
+        AttackOutEvent *e = static_cast<AttackOutEvent *>(event);
+
+        e->damageRolls.push_back(Damage( 
+            owner(),                     
+            DMG_PHYSICAL,                
+            owner().rollDamage()         
+        ));
+    }
+}
+
+class ArmorBehavior : public Behaviour {
+    virtual void process(Event *event) override {
+        if (event->type != ATTACK_IN_EVENT)
+            return;
+        AttackInEvent *e = static_cast<AttackInEvent *>(event);
+
+        for (Damage &damage : e->damageRolls) // Apply protection against physical damage.
+            if (damage.type == DMG_PHYSICAL)
+                damage.amount = std::max(0, damage.amount - owner().armorClass());
     }
 };
 ```
@@ -1664,22 +2505,122 @@ class ShieldBehavior : public Behaviour {
 ```cpp
 class VampiricBehavior : public Behaviour {
     virtual void process(Event *event) override {
-        if (event->type == DAMAGE_EVENT) {
-            DamageEvent *e = static_cast<DamageEvent *>(event);
+        if (event->type != DAMAGE_EVENT) 
+            return;
+        DamageEvent *e = static_cast<DamageEvent *>(event);
 
-            for (Damage &damage : e->damageRolls) {
-                if (damage.owner == owner() && damage.type == DMG_PHYSICAL && damage.amount > 1) {
-                    sendEvent(
-                        owner().owner(), 
-                        SpellEvent(
-                            owner(),
-                            SPELL_VAMPIRIC_HEALING, 
-                            damage.amount / 2
-                        )
-                    );
-                }
-            }
-        }
+        int totalDamage = 0;
+        for (const Damage &damage : e->damageRolls) {
+            if (damage.source == owner() && damage.type == DMG_PHYSICAL)
+                totalDamage += damage.amount;
+
+        if (totalDamage <= 1)
+            return;
+
+        sendEvent(
+            owner().owner(),
+            SpellEvent(
+                owner(),
+                SPELL_VAMPIRIC_HEALING, 
+                totalDamage / 2
+            )
+        );
+    }
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {3-5}
+class VampiricBehavior : public Behaviour {
+    virtual void process(Event *event) override {
+        if (event->type != DAMAGE_EVENT) // Handle only damage notification events.
+            return;
+        DamageEvent *e = static_cast<DamageEvent *>(event);
+
+        int totalDamage = 0;
+        for (const Damage &damage : e->damageRolls) {
+            if (damage.source == owner() && damage.type == DMG_PHYSICAL)
+                totalDamage += damage.amount;
+
+        if (totalDamage <= 1)
+            return;
+
+        sendEvent(
+            owner().owner(),
+            SpellEvent(
+                owner(),
+                SPELL_VAMPIRIC_HEALING, 
+                totalDamage / 2
+            )
+        );
+    }
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {7-10}
+class VampiricBehavior : public Behaviour {
+    virtual void process(Event *event) override {
+        if (event->type != DAMAGE_EVENT)
+            return;
+        DamageEvent *e = static_cast<DamageEvent *>(event);
+
+        int totalDamage = 0; // Calculate total physical damage dealt by this weapon.
+        for (const Damage &damage : e->damageRolls) {
+            if (damage.source == owner() && damage.type == DMG_PHYSICAL)
+                totalDamage += damage.amount;
+
+        if (totalDamage <= 1)
+            return;
+
+        sendEvent(
+            owner().owner(),
+            SpellEvent(
+                owner(),
+                SPELL_VAMPIRIC_HEALING, 
+                totalDamage / 2
+            )
+        );
+    }
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {15-22}
+class VampiricBehavior : public Behaviour {
+    virtual void process(Event *event) override {
+        if (event->type != DAMAGE_EVENT)
+            return;
+        DamageEvent *e = static_cast<DamageEvent *>(event);
+
+        int totalDamage = 0;
+        for (const Damage &damage : e->damageRolls) {
+            if (damage.source == owner() && damage.type == DMG_PHYSICAL)
+                totalDamage += damage.amount;
+
+        if (totalDamage <= 1)
+            return;
+
+        sendEvent(                      // Send event:
+            owner().owner(),            // To the player,
+            SpellEvent(                 //
+                owner(),                // From this weapon,
+                SPELL_VAMPIRIC_HEALING, // Casting vampiric healing,
+                totalDamage / 2         // For half the damage dealt.
+            )
+        );
     }
 }
 ```
@@ -1696,8 +2637,8 @@ class VampiricBehavior : public Behaviour {
 ```cpp
 // With a little bit of DSL help:
 auto VampiricSword       = WeaponBehavior() & VampiricBehavior();
-auto SpikedShieldOfChaos = WeaponBehavior() & ShieldBehavior() & CorruptingBehavior();
-auto TalkingSword        = WeaponBehavior() & TauntBehavior(tauntList, 0.01);
+auto SpikedShield        = WeaponBehavior() & ArmorBehavior();
+auto CrownOfChaos        = ArmorBehavior() & CorruptingBehavior();
 auto SwordOfExplosions   = WeaponBehavior() & RandomCastBehavior(SPELL_FIREBALL, 0.01);
 
 auto RingOfIce           = ResistanceBehavior(DMG_WATER, 0.0) & 
@@ -1706,7 +2647,7 @@ auto RingOfIce           = ResistanceBehavior(DMG_WATER, 0.0) &
 // ...
 ```
 
-<br/>
+И теперь ваш гейм-дизайнер здоровается с вами за руку!
 
 А еще мы на самом деле придумали часть Entity Component System (ECS). Рекомендую [доклад Brian Bucklew про Caves of Qud](https://www.youtube.com/watch?v=U03XXzcThGU).
 
@@ -1714,85 +2655,6 @@ auto RingOfIce           = ResistanceBehavior(DMG_WATER, 0.0) &
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <!-- Тут важно сказать что behaviors ничего не знают друг о друге. Можно мешать как душе угодно.
      --------------------------------------------------------------------------------------------------------- -->
----
----
-
-Composability / Взаимозаменяемость — это и про более мелкие API!
-
-```cpp
-void serialize(const int &src, Json &dst);
-void serialize(const MyStruct &src, Json &dst);
-
-template<class T>
-void serializeVector(const std::vector<T> &src, Json &dst);
-
-void myAwesomeFunction() {
-    Json json;
-
-    std::vector<MyStruct> v1 = getFirstVector();
-    serializeVector(v1, json);
-    std::print("{}", json);
-}
-```
-
-<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
----
----
-
-Composability / Взаимозаменяемость — это и про более мелкие API!
-
-```cpp {14-16}
-void serialize(const int &src, Json &dst);
-void serialize(const MyStruct &src, Json &dst);
-
-template<class T>
-void serializeVector(const std::vector<T> &src, Json &dst);
-
-void myAwesomeFunction() {
-    Json json;
-
-    std::vector<MyStruct> v1 = getFirstVector();
-    serializeVector(v1, json);
-    std::print("{}", json);
-
-    std::vector<std::vector<int>> v2 = getDistributions();
-    serializeVector(v2, json); // OOPS!
-    std::print("{}", json);
-}
-```
-
-<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
----
----
-
-Composability / Взаимозаменяемость — это и про более мелкие API!
-
-```cpp {5,11,15}
-void serialize(const int &src, Json &dst);
-void serialize(const MyStruct &src, Json &dst);
-
-template<class T>
-void serialize(const std::vector<T> &src, Json &dst);
-
-void myAwesomeFunction() {
-    Json json;
-
-    std::vector<MyStruct> v1 = getFirstVector();
-    serialize(v1, json);
-    std::print("{}", json);
-
-    std::vector<std::vector<int>> v2 = getDistributions();
-    serialize(v2, json); // Works!
-    std::print("{}", json);
-}
-```
-
-
-
-<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- --------------------------------------------------------------------------------------------------------- -->
 ---
 ---
 
@@ -1810,7 +2672,9 @@ Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- в идеале мы хотим писать функции как обычно, и мы хотим composability как у обычных функций.
+<!-- Мы тут начали с того, что написали API как мы его хотим видеть. Это очень полезно. НО!
+     А как мы его хотим видеть, на самом-то деле?
+     в идеале мы хотим писать функции как обычно, и мы хотим composability как у обычных функций.
      --------------------------------------------------------------------------------------------------------- -->
 ---
 ---
@@ -1875,6 +2739,70 @@ CoResult<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOpt
 }
 ```
 
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {0}
+// Fetch twitter posts asynchronously.
+Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+    return network
+        .request(makeNetworkRequest(opts))
+        .then([](std::string_view jsonData) {
+            TwitterPosts result;
+            deserialize(Json::parse(jsonData), &result);
+            return result;
+        });
+}
+```
+
+<br/>
+<div align="center">VS</div>
+<br/>
+
+```cpp {1-3}
+// Calls allocate a coroutine frame.
+CoResult<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+    auto jsonData = co_await network.request(makeNetworkRequest(opts)); // Also allocates.
+    TwitterPosts result;
+    deserialize(Json::parse(jsonData), &result);
+    co_return result;
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+```cpp {0}
+// Fetch twitter posts asynchronously.
+Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+    return network
+        .request(makeNetworkRequest(opts))
+        .then([](std::string_view jsonData) {
+            TwitterPosts result;
+            deserialize(Json::parse(jsonData), &result);
+            return result;
+        });
+}
+```
+
+<br/>
+<div align="center">VS</div>
+<br/>
+
+```cpp {1-2}
+// Should be called with co_await, turning caller function into a coroutine...
+CoResult<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+    auto jsonData = co_await network.request(makeNetworkRequest(opts));
+    TwitterPosts result;
+    deserialize(Json::parse(jsonData), &result);
+    co_return result;
+}
+```
+
 См. [What Color is Your Function](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/) by [Bob Nystrom
 ](https://github.com/munificent).
 
@@ -1890,10 +2818,11 @@ CoResult<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOpt
 
 <br/>
 
+* Иногда решения нет. Для приятной глазу асинхронности нужна поддержка stackful корутин из коробки. *Или можно сходить на доклад [@apolukhin](https://github.com/apolukhin).*
 * Начинайте с написания клиентского кода, пробуйте разные варианты API, оставляйте тот, что лучше подходит под ваши use cases.
-* Иногда решения нет. Для приятной глазу асинхронности нужна поддержка корутин из коробки. *Или можно сходить на доклад [@apolukhin](https://github.com/apolukhin).*
+* Если у вас уже есть плохой API — не стесняйтесь писать адаптеры (привет <span class="font-mono">std::chrono</span>).
 * Иногда можно поправить core language (привет <span class="font-mono">mdspan</span>).
-
+* Ваша цель — достаточно хороший API, соответствующий вашим требованиям. Идеальных API не бывает.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <!-- Поправить core language - это mdspan + operator[]
@@ -1934,6 +2863,17 @@ layout: end
 ---
 ---
 
+## Cheat Sheet 2
+### **Пользуйтесь средствами языка!**
+<br/>
+
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+
+---
+---
+
 ```cpp {all|4-5}
 class Table {
 public:
@@ -1964,3 +2904,104 @@ public:
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+Composability / Взаимозаменяемость — это и про более мелкие API!
+
+```cpp {all}
+void serialize(const int &src, Json &dst);      //
+void serialize(const MyStruct &src, Json &dst); // Serializing different types to Json.
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+Composability / Взаимозаменяемость — это и про более мелкие API!
+
+```cpp {4-5}
+void serialize(const int &src, Json &dst);
+void serialize(const MyStruct &src, Json &dst);
+
+template<class T>                                           // Can serialize vectors as Json arrays!
+void serializeVector(const std::vector<T> &src, Json &dst); // Calls serialize(const T &, Json &).
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+Composability / Взаимозаменяемость — это и про более мелкие API!
+
+```cpp {10-12}
+void serialize(const int &src, Json &dst);
+void serialize(const MyStruct &src, Json &dst);
+
+template<class T>
+void serializeVector(const std::vector<T> &src, Json &dst);
+
+void myAwesomeFunction() {
+    Json json;
+
+    std::vector<MyStruct> v1 = getFirstVector();
+    serializeVector(v1, json); // Can serialize vector of MyStruct's now!
+    std::print("{}", json);
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+Composability / Взаимозаменяемость — это и про более мелкие API!
+
+```cpp {14-16}
+void serialize(const int &src, Json &dst);
+void serialize(const MyStruct &src, Json &dst);
+
+template<class T>
+void serializeVector(const std::vector<T> &src, Json &dst);
+
+void myAwesomeFunction() {
+    Json json;
+
+    std::vector<MyStruct> v1 = getFirstVector();
+    serializeVector(v1, json);
+    std::print("{}", json);
+
+    std::vector<std::vector<int>> v2 = getDistributions();
+    serializeVector(v2, json); // OOPS!
+    std::print("{}", json);
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+Composability / Взаимозаменяемость — это и про более мелкие API!
+
+```cpp {5,11,15}
+void serialize(const int &src, Json &dst);
+void serialize(const MyStruct &src, Json &dst);
+
+template<class T>
+void serialize(const std::vector<T> &src, Json &dst);
+
+void myAwesomeFunction() {
+    Json json;
+
+    std::vector<MyStruct> v1 = getFirstVector();
+    serialize(v1, json);
+    std::print("{}", json);
+
+    std::vector<std::vector<int>> v2 = getDistributions();
+    serialize(v2, json); // Works!
+    std::print("{}", json);
+}
+```

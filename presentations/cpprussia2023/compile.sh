@@ -2,7 +2,7 @@
 
 mkdir tmp
 
-for i in {1..61}
+for i in {1..105}
 do
     while : ; do
         slidev export \
