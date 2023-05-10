@@ -3005,3 +3005,7 @@ void myAwesomeFunction() {
     std::print("{}", json);
 }
 ```
+
+---
+layout: end
+---

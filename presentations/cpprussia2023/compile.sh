@@ -1,5 +1,6 @@
 #!/bin/bash
 
+rm -R ./tmp
 mkdir tmp
 
 for i in {1..105}
@@ -10,7 +11,7 @@ do
             --range $i \
             --timeout 0 \
             --per-slide \
-            --output "$(printf "tmp/slide_%02d.pdf" $i)"
+            --output "$(printf "tmp/slide_%03d.pdf" $i)"
         if [[ $? == 0 ]]; then
             break
         fi
