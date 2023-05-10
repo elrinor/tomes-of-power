@@ -19,7 +19,7 @@ drawings:
 # use UnoCSS
 # css: unocss
 # page transition
-transition: fade
+transition: instant
 # apply any windi css classes to the current slide
 class: 'text-center'
 # since the canvas gets smaller, the visual size will become larger
@@ -36,7 +36,7 @@ layout: image-left
 image: me.jpg
 ---
 
-# Обо мне
+## Обо мне
 
 - Пишу на C++ больше 15 лет.
 - Основал WG21 Russia в 2016 вместе с [@apolukhin](https://github.com/apolukhin).
@@ -50,10 +50,13 @@ image: me.jpg
 layout: full
 ---
 
-# Для кого этот доклад?
+## Для кого этот доклад?
+
+<br/>
 
 - Для тех, кто пишет библиотечный код.
 - Для тех, чей код так или иначе будет долго жить или широко использоваться.
+- Для тех, кто хочет писать код, которым приятно пользоваться.
 
 <br/>
 
@@ -100,8 +103,7 @@ mindmap
 ---
 ---
 
-# Почему это важно?
-
+## Почему это важно?
 
 [The Wonderfully Terrible World of C and C++ Encoding APIs](https://thephd.dev/the-c-c++-rust-string-text-encoding-api-landscape):
 
@@ -232,7 +234,7 @@ mindmap
 ---
 ---
 
-# Почему это важно?
+## Почему это важно?
 
 [Exploiting aCropalypse: Recovering Truncated PNGs](https://www.da.vidbuchanan.co.uk/blog/exploiting-acropalypse.html):
 <blockquote>
@@ -468,7 +470,7 @@ struct CsvStats {
 
 class CsvDb {
 public:
-    explicit CsvDb(std::filesystem::path path); // Use path for paths!
+    explicit CsvDb(std::filesystem::path path); // Use std::filesystem::path for paths!
 
     CsvReader open(std::string_view tableName);
 
@@ -552,7 +554,7 @@ public:
     void resize(const Size &size);
     Size size() const;
 
-    void setPosition(Point point);
+    void setPosition(const Point &point);
     Point position();
 
     // ...
@@ -577,7 +579,7 @@ public:
     void resize(const Size &size);              // Window properties...
     Size size() const;                          //
                                                 //
-    void setPosition(Point point);              //
+    void setPosition(const Point &point);       //
     Point position();                           //
 
     // ...
@@ -602,7 +604,7 @@ public:
     void resize(const Size &size); 
     Size size() const;
        
-    void setPosition(Point point);
+    void setPosition(const Point &point);
     Point position();   
 
     // ...
@@ -627,7 +629,7 @@ public:
     void resize(const Size &size); 
     Size size() const;
        
-    void setPosition(Point point);
+    void setPosition(const Point &point);
     Point position();   
 
     // ...
@@ -652,7 +654,7 @@ public:
     void resize(const Size &size); 
     Size size() const;
        
-    void setPosition(Point point);
+    void setPosition(const Point &point);
     Point position();   
 
     // ...
@@ -677,7 +679,7 @@ public:
     void resize(const Size &size); 
     Size size() const;
        
-    void setPosition(Point point);
+    void setPosition(const Point &point);
     Point position();   
 
     // ...
@@ -702,8 +704,8 @@ public:
     void resize(const Size &size);
     Size size() const;
 
+    void setPosition(const Point &point);
     Point position();
-    void setPosition(Point point);
 
     // ...
 
@@ -1049,8 +1051,8 @@ std::vector<std::string> parseStrings(const Buffer &buffer, std::vector<std::str
 
 <br/>
 
-- Дробить — это еще и про слои абстракции!
 - Как только видите сложный код — думайте, каких абстракций вам не хватает!
+- Дробить — это еще и про слои абстракции!
 - Если ваш код все еще сложный — дробите дальше!
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
@@ -1612,7 +1614,7 @@ class QSharedFuture {
 public:
     auto then(Function &&function); // Where will it run?
                                     // Can I pass in a function that does a lot of work?
-    // ...
+    // ...                          // Can we do better?
 };
 
 ```
@@ -1883,60 +1885,105 @@ void myAwesomeFunction(Network &network) {
 ---
 ---
 
-<div align="center">VS</div>
+<div align="center">&nbsp;</div>
 <br/>
 <div grid="~ cols-2 gap-2" m="-t-2">
 
 ```cpp {all}
-// Dynamic polymorphism.
+// Static polymorphism.
 
-struct Serializable {
-    virtual std::string serialize() const = 0;
+struct TwitterPost {
+    std::string author;
+    std::string text;
 };
 
-struct TestScores : Serializable {
-    std::string id;
-    std::vector<int> scores;
-
-    virtual std::string serialize() const override {
-        return fmt::format("{}:{}", id, 
-                           fmt::join(scores, ",")); 
-    }
+struct TwitterUser {
+    // ...
 };
 
-struct TestAnswers : Serializable {
-    std::string id;
-    std::vector<std::string> answers;
+void deserialize(const Json &json, TwitterPost *value) {
+    value->author = json["author"];
+    value->text = json["text"];
+}
 
-    virtual std::string serialize() const override {
-        return fmt::format("{}:{}", id, 
-                           fmt::join(answers, ","));
-    }
+void deserialize(const Json &json, TwitterUser *value) {
+    // ...
+}
+```
+
+<div></div>
+</div>
+
+<style>
+.slidev-layout { pre, code {
+    font-size: 10px !important;
+    line-height: 14px !important;
+}}
+.slidev-code-line-numbers .slidev-code code .line::before {
+    margin-right: 0.5rem;
+}
+</style>
+
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+<div align="center">VS</div>
+<br/>
+<div grid="~ cols-2 gap-2" m="-t-2">
+
+```cpp {0}
+// Static polymorphism.
+
+struct TwitterPost {
+    std::string author;
+    std::string text;
 };
+
+struct TwitterUser {
+    // ...
+};
+
+void deserialize(const Json &json, TwitterPost *value) {
+    value->author = json["author"];
+    value->text = json["text"];
+}
+
+void deserialize(const Json &json, TwitterUser *value) {
+    // ...
+}
 ```
 
 ```cpp {all}
-// Static polymorphism.
+// Dynamic polymorphism.
 
-struct TestScores {
-    std::string id;
-    std::vector<int> scores;
+class Deserializable {
+public:
+    virtual void deserialize(const Json &json) = 0;
+
+protected:
+    ~Deserializable() = default;
 };
 
-struct TestAnswers {
-    std::string id;
-    std::vector<std::string> answers;
+struct TwitterPost : Deserializable {
+    std::string author;
+    std::string text;
+
+    virtual void deserialize(const Json &json) override {
+        author = json["author"];
+        text = json["text"];
+    }
 };
 
-std::string serialize(const TestScores &value) {
-    return fmt::format("{}:{}", value.id, 
-                       fmt::join(value.scores, ",")); 
-}
+struct TwitterUser : Deserializable {
+    // ...
 
-std::string serialize(const TestAnswers &value) {
-    return fmt::format("{}:{}", value.id, 
-                       fmt::join(value.answers, ","));
-}
+    virtual void deserialize(const Json &json) override {
+        // ...
+    }
+};
 ```
 </div>
 
@@ -1945,12 +1992,13 @@ std::string serialize(const TestAnswers &value) {
     font-size: 10px !important;
     line-height: 14px !important;
 }}
+.slidev-code-line-numbers .slidev-code code .line::before {
+    margin-right: 0.5rem;
+}
 </style>
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-<!-- Note: dynamic polymorphism doesn't have to be intrusive. 
-     На самом деле динамический/статический полиморфизм и интрузивность это ортогональные концепции. И то и то
-     может быть интрузивным и не интрузивным. Я по умолчанию предпочитаю неинтрузивные решения, потому что они гибче.
+<!-- Важно владеть всеми типами полиморфизма, и понимать какой полиморфизм подходит в той или иной ситуации.
      --------------------------------------------------------------------------------------------------------- -->
 ---
 layout: image
@@ -2410,10 +2458,10 @@ class WeaponBehavior : public Behaviour {
             return;
         AttackOutEvent *e = static_cast<AttackOutEvent *>(event);
 
-        e->damageRolls.push_back(Damage( // Record a damage roll that's:
-            owner(),                     // Dealt by this weapon,
-            DMG_PHYSICAL,                // Is physical,
-            owner().rollDamage()         // With weapon-specific damage.
+        e->damageRolls.push_back(Damage( // Record a damage roll
+            owner(),                     
+            DMG_PHYSICAL,                
+            owner().rollDamage()         
         ));
     }
 }
@@ -2598,6 +2646,38 @@ class VampiricBehavior : public Behaviour {
 ---
 ---
 
+```cpp {12-13}
+class VampiricBehavior : public Behaviour {
+    virtual void process(Event *event) override {
+        if (event->type != DAMAGE_EVENT)
+            return;
+        DamageEvent *e = static_cast<DamageEvent *>(event);
+
+        int totalDamage = 0;
+        for (const Damage &damage : e->damageRolls) {
+            if (damage.source == owner() && damage.type == DMG_PHYSICAL)
+                totalDamage += damage.amount;
+
+        if (totalDamage < 2) // Vampirism kicks in at totalDamage >= 2.
+            return;
+
+        sendEvent(
+            owner().owner(),
+            SpellEvent(
+                owner(),
+                SPELL_VAMPIRIC_HEALING, 
+                totalDamage / 2
+            )
+        );
+    }
+}
+```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
 ```cpp {15-22}
 class VampiricBehavior : public Behaviour {
     virtual void process(Event *event) override {
@@ -2613,12 +2693,12 @@ class VampiricBehavior : public Behaviour {
         if (totalDamage <= 1)
             return;
 
-        sendEvent(                      // Send event:
-            owner().owner(),            // To the player,
-            SpellEvent(                 //
-                owner(),                // From this weapon,
-                SPELL_VAMPIRIC_HEALING, // Casting vampiric healing,
-                totalDamage / 2         // For half the damage dealt.
+        sendEvent(              // Send vampiric healing event to the player
+            owner().owner(),    // for half the damage dealt.
+            SpellEvent(                 
+                owner(),                
+                SPELL_VAMPIRIC_HEALING, 
+                totalDamage / 2         
             )
         );
     }
@@ -2639,7 +2719,7 @@ class VampiricBehavior : public Behaviour {
 auto VampiricSword       = WeaponBehavior() & VampiricBehavior();
 auto SpikedShield        = WeaponBehavior() & ArmorBehavior();
 auto CrownOfChaos        = ArmorBehavior() & CorruptingBehavior();
-auto SwordOfExplosions   = WeaponBehavior() & RandomCastBehavior(SPELL_FIREBALL, 0.01);
+auto SwordOfFireballs    = WeaponBehavior() & RandomCastBehavior(SPELL_FIREBALL, 0.01);
 
 auto RingOfIce           = ResistanceBehavior(DMG_WATER, 0.0) & 
                            VulnerabilityBehavior(DMG_FIRE, 2.0) & 
@@ -3005,6 +3085,86 @@ void myAwesomeFunction() {
     std::print("{}", json);
 }
 ```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<!-- --------------------------------------------------------------------------------------------------------- -->
+---
+---
+
+<div align="center">VS</div>
+<br/>
+<div grid="~ cols-2 gap-2" m="-t-2">
+
+```cpp {all}
+// Static polymorphism!
+
+
+
+
+
+struct TestScores {
+    std::string id;
+    std::vector<int> scores;
+
+    std::string serialize() const {
+        return fmt::format("{}:{}", id, 
+                           fmt::join(scores, ",")); 
+    }
+};
+
+struct TestAnswers {
+    std::string id;
+    std::vector<std::string> answers;
+
+    std::string serialize() const {
+        return fmt::format("{}:{}", id, 
+                           fmt::join(answers, ","));
+    }
+};
+```
+
+```cpp {all}
+// Dynamic polymorphism.
+
+class DynamicSerializer {
+public:
+    DynamicSerializer() {
+        register<TestScores>();
+        register<TestAnswers>();
+    }
+
+    template<class T>
+    void register() {
+        _serializers.emplace(typeid(T), &serializerFnFor<T>);
+    }
+
+    std::string serialize(const std::type_info &type,
+                          const void *value) {
+        return _serializers.at(type)(value);
+    }
+
+private:
+    using SerializerFn = std::string(*)(const void *);
+
+    static template<class T>
+    std::string serializerFnFor(const void *value) {
+        return static_cast<const T *>(value)
+            ->serialize();
+    }
+
+    std::unordered_map<std::type_index, SerializerFn>
+        _serializers;
+}
+
+```
+</div>
+
+<style>
+.slidev-layout { pre, code {
+    font-size: 10px !important;
+    line-height: 14px !important;
+}}
+</style>
 
 ---
 layout: end

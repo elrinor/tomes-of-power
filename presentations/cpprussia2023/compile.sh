@@ -3,7 +3,7 @@
 rm -R ./tmp
 mkdir tmp
 
-for i in {1..105}
+for i in {1..97}
 do
     while : ; do
         slidev export \

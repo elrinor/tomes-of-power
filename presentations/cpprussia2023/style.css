@@ -14,3 +14,13 @@
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
 }
+
+.instant-enter-active,
+.instant-leave-active {
+    transition: opacity 0s ease;
+}
+
+.instant-enter-from,
+.instant-leave-to {
+    opacity: 0;
+}
