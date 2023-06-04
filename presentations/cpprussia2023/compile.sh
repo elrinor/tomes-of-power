@@ -18,4 +18,5 @@ do
     done
 done
 
-pdfunite tmp/slide_*.pdf slides.pdf
+pdfunite tmp/slide_*.pdf slides_big.pdf
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dQUIET -dBATCH -sOutputFile=slides.pdf slides_big.pdf
