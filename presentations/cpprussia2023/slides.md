@@ -1064,7 +1064,7 @@ void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
 <br/>
 
 ```cpp
-std::vector<std::string> parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
+void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
     MemoryInput input(buffer);
 
     std::string line;
@@ -1107,7 +1107,7 @@ void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
 <br/>
 
 ```cpp {5}
-std::vector<std::string> parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
+void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
     MemoryInput input(buffer);
 
     std::string line;
