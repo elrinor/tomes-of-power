@@ -1720,7 +1720,7 @@ public:
 template<class T>
 class QSharedFuture {
 public:
-    QFuture(const QFuture &other); 
+    QSharedFuture(const QSharedFuture &other); 
     void cancel();
     T result() const;
     // ...
@@ -1729,7 +1729,7 @@ public:
 template<class T>
 class QUniqueFuture {
 public:
-    QFuture(QFuture &&other); 
+    QUniqueFuture(QUniqueFuture &&other); 
     void cancel();
     T takeResult();
     // ...
