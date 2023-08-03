@@ -111,17 +111,20 @@ strcpy(buf, totally_safe_string);
 class Logger {
 public:
     /**
-     * @param category      Log category name. Category must have a log level assigned (`setCategoryLogLevel` 
-     *                      must be called first).
+     * @param category      Log category name. Category must have a log level 
+     *                      assigned (`setCategoryLogLevel` must be called 
+     *                      first).
      * @param level         Message log level.
      * @param fmt, args     Log message.
      */
     template<class... Args>
-    void log(std::string_view category, LogLevel level, fmt::format_string<Args...> fmt, Args &&... args);
+    void log(std::string_view category, LogLevel level, 
+             fmt::format_string<Args...> fmt, Args &&... args);
 
     /**
      * @param category      Log category name.
-     * @param level         New log level for this category. Log messages with lower log level will be ignored.
+     * @param level         New log level for this category. Log messages with 
+     *                      lower log level will be ignored.
      */
     void setCategoryLogLevel(std::string_view category, LogLevel level);
 };
@@ -141,10 +144,11 @@ public:
 class Logger {
 public:
     template<class... Args>
-    void log(const LogCategory &category, LogLevel level, fmt::format_string<Args...> fmt, Args &&... args);
+    void log(const LogCategory &category, LogLevel level, 
+             fmt::format_string<Args...> fmt, Args &&... args);
 
-    // Don't be a retard and don't do `log(LogCategory("blabla", LOG_INFO), ...)`, create a variable for your 
-    // `LogCategory` and reuse it.
+    // Don't do `log(LogCategory("blabla", LOG_INFO), ...)`, 
+    // create a variable for your `LogCategory` and reuse it.
     template<class... Args>
     void log(LogCategory &&, Args &&...) = delete;
 };
@@ -244,7 +248,8 @@ public:
 
 ```cpp
 /**
- * @param buffer            Input buffer to parse, contains null-terminated strings.
+ * @param buffer            Input buffer to parse, contains null-terminated 
+ *                          strings.
  * @param[out] result       Parsed strings.
  */
 void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
@@ -299,7 +304,7 @@ void parseStrings(const Buffer &buffer, std::vector<std::string> *result) {
 
 Давайте теперь посмотрим на жизненный пример из библиотеки Qt – класс `QFuture`. Это по сути прокачанный аналог `std::future`, абстракция над асинхронным вычислением. Интерфейс выглядит примерно так:
 
-```cpp {all}
+```cpp
 template<class T>
 class QFuture {
 public:
@@ -423,7 +428,8 @@ public:
  * @param opts              Fetch options - Х login, number of posts, etc.
  * @return                  Async fetch task. 
  */
-Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions &opts) {
+Task<TwitterPosts> fetchTwitterPosts(Network &network, 
+                                     const TwitterFetchOptions &opts) {
     Task<std::string> requestTask = network.request(makeRequestUrl(opts));
 
     return requestTask.then([](std::string_view jsonData) {
@@ -435,7 +441,8 @@ Task<TwitterPosts> fetchTwitterPosts(Network &network, const TwitterFetchOptions
 
 void myAwesomeFunction(Network &network) {
     // Download the latest 20 posts by Bjarne Stroustrup & print them.
-    TwitterPosts posts = fetchTwitterPosts(network, TwitterFetchOptions("@stroustrup", 20))
+    TwitterFetchOptions opts("@stroustrup", 20);
+    TwitterPosts posts = fetchTwitterPosts(network, opts)
         .run(globalThreadPool())
         .join();
     fmt::println("{}", posts);
@@ -490,6 +497,7 @@ Overload sets реализуют неинтрузивный статически
 ```cpp
 class Equipment {
 public:
+    virtual ~Equipment() = default;
     virtual void onUse() = 0;
 
     // ...
@@ -501,6 +509,7 @@ public:
 class Weapon : public Equipment {
 public:
     virtual void onAttack(Monster &monster) = 0;
+
     // ...
 };
 
@@ -552,7 +561,7 @@ class Shield : public Armor, public Weapon { // Eeeeeh?
 class Event {
 public:
     explicit Event(EventType type) : type(type) {}
-    virtual Event() = default;
+    virtual ~Event() = default;
 
     const EventType type;
 
@@ -561,8 +570,8 @@ public:
 
 class Behaviour { // Behaviours are composable pieces of event-handling logic.
 public:
-    Behaviour(Entity *owner): _owner(owner) {}
-    virtual Behaviour() = default;
+    explicit Behaviour(Entity *owner): _owner(owner) {}
+    virtual ~Behaviour() = default;
 
     virtual void process(Event *event) = 0;
 
@@ -591,7 +600,8 @@ struct Entity {
 Теперь давайте определим базовые события, которые нам будут нужны для реализации `VampiricSword`:
 ```cpp
 /**
- * When performing an attack, this event is sent to the attacker's items to populate the damage rolls.
+ * When performing an attack, this event is sent to the attacker's items to 
+ * populate the damage rolls.
  */
 class AttackOutEvent : public Event {
 public:
@@ -603,7 +613,8 @@ public:
 };
 
 /**
- * When performing an attack, this event is sent to the target's items to apply armor & protection.
+ * When performing an attack, this event is sent to the target's items to 
+ * apply armor & protection.
  */
 class AttackInEvent : public Event {
 public:
@@ -615,7 +626,8 @@ public:
 };
 
 /**
- * After a successful attack, this event is sent back to the attacker's items to notify of success / failure.
+ * After a successful attack, this event is sent back to the attacker's items 
+ * to notify of success / failure.
  */
 class AttackNotifyEvent : public Event {
 public:
@@ -659,20 +671,24 @@ public:
         AttackNotifyEvent *e = static_cast<AttackNotifyEvent *>(event);
 
         int damageAmount = 0;
-        for (const Damage &damage : e->damageRolls) {
+        for (const Damage &damage : e->damageRolls)
             if (damage.source == owner() && damage.type == DMG_PHYSICAL)
                 damageAmount += damage.amount;
 
         if (damageAmount <= 1)
             return;
 
-        // Get owning actor - monster or player. Monsters & player are entities too! 
+        // Get owning actor - monster or player. Monsters & player are 
+        // entities too! 
         Entity *actor = actorOf(owner());
 
-        // Owning actor can be null. E.g. this item is a sword lying on the ground, the room is dark, player is cursed,
-        // and his big toe connects with the pointy end.
-        if (actor)
-            sendEvent(actor, SpellEvent(SPELL_VAMPIRIC_HEALING, Damage(owner(), DMG_DARKMAGIC, damageAmount / 2)));
+        // Owning actor can be null. E.g. this item is a sword lying on 
+        // the ground, the room is dark, player is cursed, and his big 
+        // toe connects with the pointy end.
+        if (actor) {
+            Damage healing(owner(), DMG_DARKMAGIC, damageAmount / 2);
+            sendEvent(actor, SpellEvent(SPELL_VAMPIRIC_HEALING, healing));
+        }
     }
 
     // ...
@@ -680,8 +696,10 @@ public:
 
 std::unique_ptr<Entity> makeVampiricSword(Dice damageDice) {
     auto result = std::make_unique<Entity>();
-    result.behaviours.push_back(std::make_unique<WeaponBehaviour>(result.get(), damageDice));    
-    result.behaviours.push_back(std::make_unique<LifeStealingBehaviour>(result.get()));
+    result->behaviours.emplace_back(
+        std::make_unique<WeaponBehaviour>(result.get(), damageDice));
+    result->behaviours.emplace_back(
+        std::make_unique<LifeStealingBehaviour>(result.get()));
     return result;
 }
 ```
@@ -751,21 +769,7 @@ std::unique_ptr<Entity> makeVampiricSword(Dice damageDice) {
 4. Создавайте ортогональные и взаимозаменяемые абстракции.
    *Проверяйте качество абстракций по тестируемости вашего кода – правильно попиленный на абстракции API легко и приятно тестировать! Если не знаете, с чего начать – вспомните пример STL, "данные ортогональны логике."*
 
-На практике обычно бывает довольно тяжело с первого раза прийти к хорошему API – требуется опыт, глубокое понимание предметной области, и возможных паттернов использования. Всего этого у вас может не быть по вполне объективным причинам. Поэтому я рассматриваю API дизайн как *итеративный процесс*. Ваш API должен быть достаточно хорош и гибок, чтобы решать ваши текущие задачи, не заставляя пользователей этого API страдать, и если прийти в это состояние с первого раза не получается – итерируйтесь! Пробуйте разные варианты, пишите клиентский код, обычно за две-три итерации получается прийти к достаточно простому, гибкому и безопасному API.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+На практике обычно бывает довольно тяжело с первого раза прийти к хорошему API – требуется опыт, глубокое понимание предметной области, и возможных паттернов использования. Всего этого у вас может не быть по вполне объективным причинам. Поэтому я рассматриваю API дизайн как *итеративный процесс*. Ваш API должен быть достаточно хорош и гибок, чтобы решать ваши текущие задачи, не заставляя пользователей этого API страдать, и если прийти в это состояние с первого раза не получается – итерируйтесь! Пробуйте разные варианты, пишите клиентский код, обычно за три-четыре итерации получается прийти к достаточно простому, гибкому и безопасному API.
 
 
 
