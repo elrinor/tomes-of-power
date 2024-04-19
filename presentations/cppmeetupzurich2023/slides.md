@@ -584,7 +584,7 @@ double evaluate(const std::any &e) {
 
 * Also possible:
   * <span class="font-mono">let [[a, b], c]</span>.
-  * <span class="font-mono">let [[0, 0], c]</span>.
+  * <span class="font-mono">[[0, 0], let c]</span>.
   * <span class="font-mono">[MyPair: let [a, b], 0]</span>.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
@@ -719,6 +719,8 @@ std::vector<[:r:]> v = { value };
 * Prefix <span class="font-mono">^</span> reflects.
 * Splicers in the form <span class="font-mono">[: refl :]</span> produce grammatical elements from reflections. "Accordion operator."
 
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+
 <!--
 it makes no assumptions about the representation used within the implementation (e.g., it doesn’t advantage one compiler over another), it is trivially extensible (no types need to be added to represent additional language elements and meta-elements as the language evolves), and it allows convenient collections of heterogeneous constructs without having to surface reference semantics (e.g., a std::vector<std::meta::info> can easily represent a mixed template argument list — containing types and nontypes — without fear of slicing values).
 -->
@@ -746,6 +748,8 @@ constexpr std::meta::info va = std::meta::substitute(v, {a});
 
 * Can reflect & unreflect templates.
 * A number of <span class="font-mono">consteval</span> functions are offered that work with <span class="font-mono">std::meta::info</span>.
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 
 
 
@@ -778,6 +782,8 @@ int main() {
 }
 ```
 
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+
 
 
 
@@ -787,9 +793,6 @@ int main() {
 
 
 # Reflection: codegen with template for
-
-
-
 
 ```cpp {all}
 using StringHandler = std::string(*)(const void *);
@@ -811,7 +814,9 @@ constexpr std::array handlers = [] {
 
 <br/>
 
-* Today you would normally do this with macros.
+* Today you would normally do this with macros or type lists.
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 
 <!--
 https://godbolt.org/z/d5G75ojYx
@@ -822,6 +827,7 @@ https://godbolt.org/z/d5G75ojYx
 
 ---
 ---
+
 
 
 
@@ -844,6 +850,9 @@ enum Color { red, green, blue };
 static_assert(enum_to_string(Color::red) == "red");
 static_assert(enum_to_string(Color(42)) == "<unnamed>");
 ```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+
 
 
 
@@ -868,6 +877,9 @@ constexpr std::optional<E> string_to_enum(std::string_view name) {
     return std::nullopt;
 }
 ```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+
 
 
 
@@ -894,6 +906,9 @@ constexpr make_enum_pairs() {
 enum Color { red, green, blue };
 constexpr auto mapping = frozen::make_unordered_map(make_enum_pairs<Color>());
 ```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+
 
 
 
@@ -928,6 +943,8 @@ constexpr auto get(Tuple<Ts...> &t) noexcept -> std::tuple_element_t<I, Tuple<Ts
 }
 ```
 
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+
 
 
 
@@ -948,6 +965,9 @@ void hash_append(H& algo, T const& t) {
     }
 }
 ```
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+
 
 
 
@@ -977,6 +997,8 @@ constexpr bool fun = is_incomplete_type(type);
 
 Thus, you can make a counter (like the <span class="font-mono">\_\_COUNTER\_\_</span> macro) on reflection. Could do it before with declarations, now it's just a <span class="font-mono">consteval</span> function call.
 
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+
 
 
 
@@ -989,7 +1011,7 @@ Thus, you can make a counter (like the <span class="font-mono">\_\_COUNTER\_\_</
 # Reflection: open questions
 
 
-What does this code de? 
+What does this code do? 
 ```cpp {all}
 constexpr auto tmpl = template_of(^int);
 ```
@@ -1001,6 +1023,8 @@ constexpr auto tmpl = template_of(^int);
 
 Would be nice to do this with exceptions, need <span class="font-mono">constexpr</span> exceptions in the language.
 
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+
 
 
 
@@ -1013,8 +1037,14 @@ Would be nice to do this with exceptions, need <span class="font-mono">constexpr
 # Reflection: open questions
 
 
-* Current proposal also doesn't solve the codegen question. Template <span class="font-mono">switch</span>, anyone?
-* <span class="font-mono">define_class</span> API in its current form is questionable. How do we add member functions? How do we add <span class="font-mono">[[no_unique_address]]</span> to a member?
+* Current proposal doesn't solve the codegen question. 
+  * Template <span class="font-mono">switch</span>, anyone?
+* <span class="font-mono">define_class</span> API in its current form is questionable. 
+  * How do we add member functions? 
+  * How do we add <span class="font-mono">[[no_unique_address]]</span> to a member?
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+
 
 
 
