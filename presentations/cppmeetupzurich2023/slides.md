@@ -454,7 +454,7 @@ double evaluate(const Expression &e) {
 
 ```cpp {all}
 double evaluate(Operation op, double l, double r) {
-    return e match {
+    return op match {
         Operation::Add => l + r;
         Operation::Mul => l * r;
         Operation::Val => l;
@@ -611,7 +611,7 @@ int fib(int n) {
 <br/>
 
 ```cpp {all}
-if (expr match [foo, 0]) {
+if (expr match [let foo, 0]) {
     // `foo` is available here
 }
 ```
