@@ -3,7 +3,7 @@
 rm -R ./tmp2
 mkdir tmp2
 
-for i in {1..36}
+for i in {1..39}
 do
     while : ; do
         slidev export \

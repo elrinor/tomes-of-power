@@ -51,6 +51,7 @@ image: me.jpg
 - Руководил инфраструктурой, поиском и ML в Озоне.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -76,6 +77,7 @@ layout: full
 Я прочитал обсуждаемые предложения в стандарт и присутствовал на обсуждениях в комитете, чтобы вам не пришлось этого делать.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!-- 
 Pattern Matching = сопоставление с образцом? Проверка соответствия шаблону? Распознавание шаблонов?
 -->
@@ -101,6 +103,7 @@ Pattern Matching = сопоставление с образцом? Провер�
 * ...и еще немного по мелочи.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!-- 
 Also views::concat, but that's too minor.
 Errorneous behavior here: https://isocpp.org/files/papers/P2795R5.html.
@@ -130,6 +133,7 @@ Erroneous behavior is always the consequence of incorrect program code.
 * ...и еще немного по мелочи.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -165,9 +169,9 @@ Erroneous behavior is always the consequence of incorrect program code.
             </td><td>
               Рассмотрено в LWG
             </td><td>
-              C++26
+              <span class="text-green-300">C++26</span>
             </td><td>
-              C++26
+              <span class="text-green-300">C++26</span>
             </td>
         </tr><tr>
             <td>
@@ -175,9 +179,9 @@ Erroneous behavior is always the consequence of incorrect program code.
             </td><td>
               Зависит от Senders
             </td><td>
-              C++29
+              <span class="text-red-300">C++29</span>
             </td><td>
-              C++26
+              <span class="text-green-300">C++26</span>
             </td>
         </tr><tr>
             <td>
@@ -185,9 +189,9 @@ Erroneous behavior is always the consequence of incorrect program code.
             </td><td>
               Замержено!
             </td><td>
-              C++26
+              <span class="text-green-300">C++26</span>
             </td><td>
-              C++26
+              <span class="text-green-300">C++26</span>
             </td>
         </tr><tr>
             <td>
@@ -195,9 +199,9 @@ Erroneous behavior is always the consequence of incorrect program code.
             </td><td>
               Направлено в LWG
             </td><td>
-              C++26
+              <span class="text-green-300">C++26</span>
             </td><td>
-              C++26
+              <span class="text-green-300">C++26</span>
             </td>
         </tr><tr>
             <td>
@@ -205,9 +209,9 @@ Erroneous behavior is always the consequence of incorrect program code.
             </td><td>
               Рассмотрено в SG21
             </td><td>
-              C++29
+              <span class="text-red-300">C++29</span>
             </td><td>
-              C++26
+              <span class="text-green-300">C++26</span>
             </td>
         </tr><tr>
             <td>
@@ -215,19 +219,19 @@ Erroneous behavior is always the consequence of incorrect program code.
             </td><td>
               Направлено в EWG
             </td><td>
-              C++26
+              <span class="text-green-300">C++26</span>
             </td><td>
-              C++26
+              <span class="text-green-300">C++26</span>
             </td>
         </tr><tr>
             <td>
               Pattern Matching
             </td><td>
-              Рассматирвается в EWG
+              Рассматривается в EWG
             </td><td>
-              C++29
+              <span class="text-red-300">C++29</span>
             </td><td>
-              C++26
+              <span class="text-green-300">C++26</span>
             </td>
         </tr>
     </tbody>
@@ -245,6 +249,7 @@ Erroneous behavior is always the consequence of incorrect program code.
 
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -266,6 +271,7 @@ Erroneous behavior is always the consequence of incorrect program code.
 <img src="/bjarne.png" style="height: 45%; position: fixed; bottom: 10px; right: 50px; "/>
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -287,6 +293,8 @@ class: 'text-center'
 
 # Pattern matching
 
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -321,6 +329,7 @@ double evaluate(const Expression &e) {
 — Линус Торвальдс, рассылка git.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -350,6 +359,7 @@ double evaluate(const Expression &e) {
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -380,9 +390,10 @@ double evaluate(const Expression &e) {
 * Матчи вычисляются по порядку.
 * После <span class="font-mono">=></span> можно использовать только выражения.
 * Если матч не был найден, то вызывается <span class="font-mono">std::terminate()</span>.
-* <span class="font-mono">let</span> используется для объявление binding'ов.
+* <span class="font-mono">let</span> используется для объявления binding'ов.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -409,6 +420,7 @@ double evaluate(const Expression &e) {
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -441,6 +453,7 @@ double evaluate(const Expression &e) {
 — Бьёрн Страуструп, как нагаллюцинировал ChatGPT.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -458,29 +471,27 @@ struct Expression : std::variant<AddNode, MulNode, double> {};
 
 double evaluate(const Expression &e) {
     // return e match {
-    return [&] {
-        using std::get;
-        switch (e.index()) {
+    switch (e.index()) {
     //     AddNode: let arg => evaluate(*arg.l) + evaluate(*arg.r);
-            case 0: {
-                auto &&arg = get<0>(e);
-                return evaluate(*arg.l) + evaluate(*arg.r);
-            }
-    //     double:  let arg => arg;
-            case 2: {
-                auto &&arg = get<2>(e);
-                return arg;
-            }
-    //     _                => throw EvaluationException(); // e.valueless_by_exception().
-            default:
-                throw EvaluationException(); // e.valueless_by_exception().
+        case 0: {
+            auto &&arg = get<0>(e);
+            return evaluate(*arg.l) + evaluate(*arg.r);
         }
-    }();
+    //     ...
+    //     double:  let arg => arg;
+        case 2: {
+            auto &&arg = get<2>(e);
+            return arg;
+        }
+    //     _                => throw EvaluationException(); // e.valueless_by_exception().
+        default:
+            throw EvaluationException(); // e.valueless_by_exception().
+    }
 }
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!--
 Note that match expressions support trailing return types --- the same way as lambdas.
 std::variant_size<Expression> is well-formed, thus it's a variant => we go the variant way.
@@ -501,25 +512,24 @@ using Expression = std::any;
 
 double evaluate(const Expression &e) {
     // return e match {
-    return [&] {
     //     AddNode: let arg => evaluate(*arg.l) + evaluate(*arg.r);
-        if (auto *p = std::cast<Expression>::operator()<AddNode>(e)) {
-            auto &&arg = *p;
-            return evaluate(*arg.l) + evaluate(*arg.r);
+    if (auto *p = std::cast<Expression>::operator()<AddNode>(e)) {
+        auto &&arg = *p;
+        return evaluate(*arg.l) + evaluate(*arg.r);
+    //     ...
     //     double:  let arg => arg;
-        } else if (auto *p = std::cast<Expression>::operator()<double>(e)) {
-            auto &&arg = *p;
-            return arg;
+    } else if (auto *p = std::cast<Expression>::operator()<double>(e)) {
+        auto &&arg = *p;
+        return arg;
     //     _                => throw EvaluationException(); // e.valueless_by_exception().
-        } else {
-            throw EvaluationException(); // e.valueless_by_exception().
-        }
-    }();
+    } else {
+        throw EvaluationException(); // e.valueless_by_exception().
+    }
 }
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!--
 Note that we're using static operator(), this is C++23.
 -->
@@ -550,9 +560,10 @@ double evaluate(const Expression &e) {
 <br/>
 
 * Внутри те же самые вызовы <span class="font-mono">std::cast</span>, который уже вызывает <span class="font-mono">dynamic_cast</span>. 
-* Есть техники, позволяющие выполнить этот код быстрее чем цепочку вызовов <span class="font-mono">dynamic_cast</span>.
+* Есть техники, позволяющие выполнить этот код быстрее, чем цепочку вызовов <span class="font-mono">dynamic_cast</span>.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -583,6 +594,7 @@ double evaluate(Operation op, double l, double r) {
 * На деле компилируется в <span class="font-mono">switch</span>.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -611,6 +623,7 @@ Color colorFromString(std::string_view s) {
 * Есть возможности для оптимизации если позволить компилятору применить немного магии.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -640,6 +653,7 @@ double evaluate(const std::tuple<Operation, double, double> &op) {
 * Показывает, почему нам нужен <span class="font-mono">let</span>.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -664,6 +678,7 @@ double classify(Point point) {
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -697,12 +712,16 @@ double evaluate(const std::any &e) {
   * <span class="font-mono">[MyPair: let [a, b], 0]</span>.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
 
 ---
 ---
+
+
+
 
 # Pattern matching: использование <span class="font-mono">if</span>
  
@@ -726,6 +745,7 @@ if (expr match [let foo, 0]) {
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -744,6 +764,7 @@ if (expr match [let foo, 0]) {
 * <span class="font-mono">std::cast</span> для <span class="font-mono">std::any</span>, <span class="font-mono">std::exception_ptr</span>, и полиморфных типов.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!--
 Нужно сказать что все функции ищутся через ADL.
 -->
@@ -754,7 +775,7 @@ if (expr match [let foo, 0]) {
 ---
 ---
 
-http://localhost:3030/presenter/
+
 
 
 # Pattern matching: открытые вопросы
@@ -763,10 +784,10 @@ http://localhost:3030/presenter/
 * Матчинг для <span class="font-mono">std::expected<T, T></span>.
 * Вызов <span class="font-mono">std::terminate</span> если матч не был найден — это как-то чересчур...
   * Можем ли мы проверить во время компиляции, что <span class="font-mono">std::terminate</span> точно не будет вызван?
-* Специфицированные протоколы кастомизации. Протокол для типов, подобных <span class="font-mono">std::variant</span>, сейчас вызывает вопросы (например, <span class="font-mono">std::visit</span> не реализован в терминах существующего протокола).
+* Протоколы кастомизации. Протокол для типов, подобных <span class="font-mono">std::variant</span>, сейчас вызывает вопросы (например, <span class="font-mono">std::visit</span> не реализован в терминах существующего протокола).
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!--
 И я не рассказал о матчинге для std::optional. Матч ?.
 -->
@@ -791,11 +812,17 @@ class: 'text-center'
 
 # Рефлексия
 
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
+
 
 
 
 ---
 ---
+
+
+
 
 # Рефлексия: немного истории
 
@@ -809,6 +836,7 @@ class: 'text-center'
 * Дизайн последней итерации предложения основан на <span class="font-mono">consteval</span> функциях, которые появились только в C++20.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -836,7 +864,7 @@ std::vector<[:r:]> v = { value };
 * <span class="font-mono">[:</span> и <span class="font-mono">:]</span> создают грамматические конструкции языка из объектов типа <span class="font-mono">std::meta::info</span>.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!--
 it makes no assumptions about the representation used within the implementation (e.g., it doesn’t advantage one compiler over another), it is trivially extensible (no types need to be added to represent additional language elements and meta-elements as the language evolves), and it allows convenient collections of heterogeneous constructs without having to surface reference semantics (e.g., a std::vector<std::meta::info> can easily represent a mixed template argument list — containing types and nontypes — without fear of slicing values).
 -->
@@ -866,6 +894,7 @@ constexpr std::meta::info va = std::meta::substitute(v, {a});
 * Есть ряд <span class="font-mono">consteval</span> функций, работающих с <span class="font-mono">std::meta::info</span>.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -899,6 +928,7 @@ int main() {
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -933,7 +963,7 @@ constexpr std::array handlers = [] {
 * Сегодня вы можете сделать то же самое с помощью макросов или списков типов.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
-
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!--
 https://godbolt.org/z/d5G75ojYx
 -->
@@ -968,6 +998,7 @@ static_assert(enum_to_string(Color(42)) == "<unnamed>");
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -995,6 +1026,7 @@ constexpr std::optional<E> string_to_enum(std::string_view name) {
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -1010,7 +1042,7 @@ constexpr std::optional<E> string_to_enum(std::string_view name) {
 ```cpp {all}
 template<class E>
     requires std::is_enum_v<E>
-constexpr make_enum_pairs() {
+consteval make_enum_pairs() {
     constexpr auto size = std::meta::enumerators_of(^E).size();
     std::array<std::pair<std::string_view, E>, size> result;
     for (std::size_t i = 0; auto e : std::meta::enumerators_of(^E)) {
@@ -1024,12 +1056,14 @@ constexpr auto mapping = frozen::make_unordered_map(make_enum_pairs<Color>());
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
 
 ---
 ---
+
 
 
 
@@ -1060,11 +1094,14 @@ constexpr auto get(Tuple<Ts...> &t) noexcept -> std::tuple_element_t<I, Tuple<Ts
 ```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
+
 
 
 
 ---
 ---
+
 
 
 
@@ -1090,6 +1127,7 @@ constexpr bool fun = is_incomplete_type(type);
 Вы можете создать счетчик (как макрос <span class="font-mono">__COUNTER\__</span>) с помощью рефлексии. Ранее это можно было сделать через объявления, теперь это вызов <span class="font-mono">consteval</span> функции.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -1116,6 +1154,7 @@ constexpr auto tmpl = template_of(^int);
 Было бы хорошо сделать обработку ошибок через исключения, но нужна поддержка исключений в <span class="font-mono">constexpr</span> контексте.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 
@@ -1136,6 +1175,28 @@ constexpr auto tmpl = template_of(^int);
   * ...
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
+
+
+
+
+---
+---
+
+
+
+
+# Хотите узнать больше?
+
+* [P2688R1](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2688r1.pdf): Pattern Matching: <span class="font-mono">match</span> Expression.
+* [P2996R2](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2996r2.html): Reflection for C++26.
+* [P2300R9](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2300r9.html): <span class="font-mono">std::execution</span>.
+* [P1673R13](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p1673r13.html): A free function linear algebra interface based on the BLAS.
+* [P1928R8](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p1928r8.pdf): <span class="font-mono">std::simd</span> — merge data-parallel types from the Parallelism TS 2.
+* [P2900R6](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2900r6.pdf): Contracts for C++.
+
+<div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
+<div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 
 
 

@@ -533,7 +533,7 @@ https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p3068r0.pdf
 
 Senders.
 
-https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2300r7.html
+https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2300r9.html
 
 The problem:
 - We need more than std::thread, std::future, std::async, std::mutex, etc.
