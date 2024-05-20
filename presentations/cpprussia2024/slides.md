@@ -322,11 +322,14 @@ double evaluate(const Expression &e) {
 }
 ```
 
-<br/>
-
-> C++ — ужасный язык.
-
-— Линус Торвальдс, рассылка git.
+```cpp {all}
+struct AddNode {
+    std::unique_ptr<Expression> l, r;
+};
+struct MulNode {
+    std::unique_ptr<Expression> l, r;  
+};
+```
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
@@ -357,6 +360,12 @@ double evaluate(const Expression &e) {
         assert(false && "eeeh?");
 }
 ```
+
+<br/>
+
+> C++ — ужасный язык.
+
+— Линус Торвальдс, рассылка git.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
@@ -965,6 +974,7 @@ constexpr std::array handlers = [] {
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!--
+Зачем это? Чтобы переложить одни джсоны в другие джсоны. Потому что это то чем занимаются С++ разработчики.
 https://godbolt.org/z/d5G75ojYx
 -->
 
