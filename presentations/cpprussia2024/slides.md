@@ -105,11 +105,20 @@ Pattern Matching = сопоставление с образцом? Провер�
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!-- 
-Also views::concat, but that's too minor.
+Про ошибочное поведение возможно расскажет Сергей Талантов?
+<br/>
+<br/>
+Если кратко. Ошибочное поведение - это всегда следствие некорректного кода.
+<br/>
+<br/>
+Читать неинициализированную переменную - это по-прежнему ошибка, но если вы читаете такую переменную, то реализация вам
+не мешает, вы получите какое-то значение. В отличие от UB, когда вы просто не знаете что там произойдет.
+<br/>
+<br/>
 Errorneous behavior here: https://isocpp.org/files/papers/P2795R5.html.
-To quote:
-Erroneous behavior is always the consequence of incorrect program code.
-...it is still "wrong" to read an uninitialized value, but if you do read it and the implementation does not otherwise stop you, you get some specific value.
+<br/>
+<br/>
+Also views::concat, but that's too minor.
 -->
 
 
@@ -397,15 +406,30 @@ double evaluate(const Expression &e) {
 <br/>
 
 * Матчи вычисляются по порядку.
+* <span class="font-mono">let</span> используется для объявления binding'ов.
 * После <span class="font-mono">=></span> можно использовать только выражения.
 * Если матч не был найден, то вызывается <span class="font-mono">std::terminate()</span>.
-* <span class="font-mono">let</span> используется для объявления binding'ов.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
-
-
-
+<!--
+e match что-то - это match-выражение.
+<br/>
+<br/>
+Внутри по одному перечислены матчи.
+<br/>
+<br/>
+Посмотрим на первый матч. Проверяет тип, создает биндинг, возвращает результат.
+<br/>
+<br/>
+=> - это не юникод.
+<br/>
+<br/>
+_ - матчит все, это default ветка.
+<br/>
+<br/>
+В матч-выражение можно дописать возвращаемый тип - как в лямбду.
+-->
 
 ---
 ---
@@ -463,6 +487,9 @@ double evaluate(const Expression &e) {
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
+<!--
+Я попросил chatgpt подыскать мне цитату Бьярни на эту тему, было много цитат не в тему, и потом он выдал вот это.
+-->
 
 
 
@@ -502,8 +529,7 @@ double evaluate(const Expression &e) {
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!--
-Note that match expressions support trailing return types --- the same way as lambdas.
-std::variant_size<Expression> is well-formed, thus it's a variant => we go the variant way.
+Если std::variant_size<Expression> определен, значит считаем что это тип похожий на вариант.
 -->
 
 
@@ -540,7 +566,7 @@ double evaluate(const Expression &e) {
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!--
-Note that we're using static operator(), this is C++23.
+Статический operator() - это C++23.
 -->
 
 
@@ -568,6 +594,7 @@ double evaluate(const Expression &e) {
 
 <br/>
 
+* Вы не должны этого хотеть, но вдруг...
 * Внутри те же самые вызовы <span class="font-mono">std::cast</span>, который уже вызывает <span class="font-mono">dynamic_cast</span>. 
 * Есть техники, позволяющие выполнить этот код быстрее, чем цепочку вызовов <span class="font-mono">dynamic_cast</span>.
 
@@ -607,9 +634,10 @@ double evaluate(Operation op, double l, double r) {
 
 
 
+---
+---
 
----
----
+
 
 
 # Pattern matching: лучше чем <span class="font-mono">switch</span>!
@@ -663,6 +691,9 @@ double evaluate(const std::tuple<Operation, double, double> &op) {
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
+<!--
+Pattern matching позволяет нам использовать синтаксис схожий с тем, что используется в structured bindings.
+-->
 
 
 
@@ -688,6 +719,9 @@ double classify(Point point) {
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
+<!--
+Такой синтаксис работает везде где работают structured bindings. Это не обязаны быть std::tuple'ы.
+-->
 
 
 
@@ -755,6 +789,13 @@ if (expr match [let foo, 0]) {
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
+<!--
+Если вам не хватает того что предоставляет pattern matching, то есть возможность использовать дополнительные условия в
+матчах.
+<br/>
+<br/>
+Также можно отдельно проверить один матч. 
+-->
 
 
 
@@ -769,13 +810,16 @@ if (expr match [let foo, 0]) {
 
 * <span class="font-mono">operator==</span> для матчинга константных выражений.
 * <span class="font-mono">std::tuple_size\<T\></span>, <span class="font-mono">std::tuple_element<I, T></span>, и <span class="font-mono">get\<I\>(v)</span> для типов, подобных <span class="font-mono">std::tuple</span>.
-* <span class="font-mono">std::variant_size\<T\></span>, <span class="font-mono">std::variant_alternative<I, T></span>, и <span class="font-mono">index(v)</span> и <span class="font-mono">get\<I\>(v)</span> для типов, подобных <span class="font-mono">std::variant</span>.
+* <span class="font-mono">std::variant_size\<T\></span>, <span class="font-mono">std::variant_alternative<I, T></span>, и <span class="font-mono">v.index()</span> и <span class="font-mono">get\<I\>(v)</span> для типов, подобных <span class="font-mono">std::variant</span>.
 * <span class="font-mono">std::cast</span> для <span class="font-mono">std::any</span>, <span class="font-mono">std::exception_ptr</span>, и полиморфных типов.
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!--
-Нужно сказать что все функции ищутся через ADL.
+Функции ищутся через ADL.
+<br/>
+<br/>
+Вы можете реализовать `std::cast` для `QVariant`, например.
 -->
 
 
@@ -793,7 +837,7 @@ if (expr match [let foo, 0]) {
 * Матчинг для <span class="font-mono">std::expected<T, T></span>.
 * Вызов <span class="font-mono">std::terminate</span> если матч не был найден — это как-то чересчур...
   * Можем ли мы проверить во время компиляции, что <span class="font-mono">std::terminate</span> точно не будет вызван?
-* Протоколы кастомизации. Протокол для типов, подобных <span class="font-mono">std::variant</span>, сейчас вызывает вопросы (например, <span class="font-mono">std::visit</span> не реализован в терминах существующего протокола).
+* Протоколы кастомизации. Протокол для типов, подобных <span class="font-mono">std::variant</span>, сейчас вызывает вопросы (например, <span class="font-mono">std::visit</span> не реализован в терминах этого протокола).
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
@@ -875,7 +919,19 @@ std::vector<[:r:]> v = { value };
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
 <!--
-it makes no assumptions about the representation used within the implementation (e.g., it doesn’t advantage one compiler over another), it is trivially extensible (no types need to be added to represent additional language elements and meta-elements as the language evolves), and it allows convenient collections of heterogeneous constructs without having to surface reference semantics (e.g., a std::vector<std::meta::info> can easily represent a mixed template argument list — containing types and nontypes — without fear of slicing values).
+Есть std::meta::info - непрозрачный тип для рефлексии, по сути рефлекшн-дескриптор.
+<br/>
+<br/>
+Есть оператор крышка - оператор рефлексии. Можно например применить к типу, и получить рефлекшн-дескриптор этого типа.
+<br/>
+<br/>
+Почему тип std::meta::info один - потому что предложение становится проще. И мы не прибиваем гвоздями абстракции языка к системе типов - так проще развивать язык. 
+<br/>
+<br/>
+А еще надо как-то кодировать массив шаблонных параметров, а это не только типы.
+<br/>
+<br/>
+Оператор аккордеон - ...
 -->
 
 
@@ -1067,6 +1123,18 @@ constexpr auto mapping = frozen::make_unordered_map(make_enum_pairs<Color>());
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
+<!--
+Можно сделать еще лучше, например с помощью библиотеки frozen.
+<br/>
+<br/>
+Если вы не знакомы с библиотекой frozen - она позволяет во время компиляции создавать идеальные хеш-таблицы. 
+<br/>
+<br/>
+Идеальная хеш-таблица - это хеш-таблица без коллизий, то есть доступ за гарантированные O(1).
+<br/>
+<br/>
+Из интересного - здесь не нужен template for.
+-->
 
 
 
@@ -1105,6 +1173,9 @@ constexpr auto get(Tuple<Ts...> &t) noexcept -> std::tuple_element_t<I, Tuple<Ts
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
+<!--
+И теперь фаталити. Можно написать тапл в один экран кода.
+-->
 
 
 
@@ -1117,8 +1188,8 @@ constexpr auto get(Tuple<Ts...> &t) noexcept -> std::tuple_element_t<I, Tuple<Ts
 
 # Рефлексия: интересности
 
-* Рефлексия читает текущее состояние компилятора.
-* Рефлексия изменяет текущее состояние компилятора.
+* Рефлексия читает текущее состояние компиляции.
+* Рефлексия изменяет текущее состояние компиляции.
 
 <br/>
 
@@ -1138,6 +1209,9 @@ constexpr bool fun = is_incomplete_type(type);
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
+<!--
+Если вы внимательно следили, то что же получается?
+-->
 
 
 
@@ -1207,6 +1281,9 @@ constexpr auto tmpl = template_of(^int);
 
 <div class="text-gray-500 text-xs absolute bottom-0 right-0"><SlideCurrentNo/> / <SlidesTotal/></div>
 <div class="text-gray-500 text-xs absolute bottom-0 left-0">Александр Фокин | Обзор С++26</div>
+<!--
+Если хотите узнать больше - я накидал ссылок на самые интересные предложения в С++26.
+-->
 
 
 
